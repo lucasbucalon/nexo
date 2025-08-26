@@ -1,0 +1,41 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  outline: 0;
+}
+
+html {
+  font-size: 62.5%;
+  font-family: "Montserrat", sans-serif;
+  color-scheme: light dark;
+}
+
+body {
+  padding: 5%;
+  height: 100vh;
+  align-items: center;
+  text-align: center;
+  font-size: 1.6rem;
+  font-optical-sizing: auto;
+  letter-spacing: 1px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+  position: relative;
+  text-rendering: optimizeLegibility;
+  background: linear-gradient(
+    to right top,
+    rgb(21, 12, 63),
+    rgb(10, 49, 23) 80%
+  );
+  background-attachment: fixed;
+}
+
+header {
+  h1 {
+    color: white;
+  }
+}
