@@ -1,29 +1,39 @@
-// Botão com Efeito Ripple Persistente
+//  Botão com Efeito Ripple
+document.querySelectorAll(".ripple-button").forEach((button) => {
+  let isRippling = false;
 
-document
-  .querySelector(".ripple-button")
-  .addEventListener("mousedown", function (e) {
-    const button = this;
-    const rect = button.getBoundingClientRect();
-    const size = Math.max(rect.width, rect.height);
-    const x = e.clientX - rect.left - size / 2;
-    const y = e.clientY - rect.top - size / 2;
+  ["mousedown", "touchstart"].forEach((evt) => {
+    button.addEventListener(evt, function (e) {
+      if (isRippling) return;
+      isRippling = true;
 
-    const ripple = document.createElement("span");
-    ripple.style.width = ripple.style.height = `${size}px`;
-    ripple.style.left = `${x}px`;
-    ripple.style.top = `${y}px`;
-    ripple.classList.add("ripple");
+      const rect = button.getBoundingClientRect();
+      const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+      const clientY = e.touches ? e.touches[0].clientY : e.clientY;
 
-    button.appendChild(ripple);
+      const maxX = Math.max(clientX - rect.left, rect.right - clientX);
+      const maxY = Math.max(clientY - rect.top, rect.bottom - clientY);
+      const radius = Math.sqrt(maxX ** 2 + maxY ** 2);
 
-    function removeRipple() {
-      ripple.classList.add("fade-out");
-      setTimeout(() => ripple.remove(), 300);
-      button.removeEventListener("mouseup", removeRipple);
-      button.removeEventListener("mouseleave", removeRipple);
-    }
+      const ripple = document.createElement("span");
+      ripple.classList.add("ripple");
+      ripple.style.width = ripple.style.height = `${radius * 2}px`;
+      ripple.style.left = `${clientX - rect.left - radius}px`;
+      ripple.style.top = `${clientY - rect.top - radius}px`;
 
-    button.addEventListener("mouseup", removeRipple);
-    button.addEventListener("mouseleave", removeRipple);
+      button.querySelectorAll(".ripple").forEach((r) => r.remove());
+      button.appendChild(ripple);
+
+      function removeRipple() {
+        ripple.classList.add("fade-out");
+        setTimeout(() => ripple.remove(), 300);
+        isRippling = false;
+      }
+
+      button.addEventListener("mouseup", removeRipple, { once: true });
+      button.addEventListener("mouseleave", removeRipple, { once: true });
+      button.addEventListener("touchend", removeRipple, { once: true });
+      button.addEventListener("touchcancel", removeRipple, { once: true });
+    });
   });
+});

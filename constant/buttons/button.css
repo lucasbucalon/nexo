@@ -3,16 +3,24 @@
 .ripple-button {
   position: relative;
   overflow: hidden;
-  padding: 15px 100px;
-  font-size: 18px;
-  font-weight: bold;
+  padding: 1.6rem 0;
+  width: 100%;
+  max-width: 400px;
+  font-size: 1.8rem;
   color: white;
   background-color: rgb(72, 72, 255);
   border: none;
-  border-radius: 8px;
+  border-radius: 10px;
   cursor: pointer;
   outline: none;
   transition: background 0.3s, transform 0.1s;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+.ripple-button:focus-visible {
+  outline: 3px solid #ffeb3b;
+  outline-offset: 4px;
 }
 
 .ripple-button:active {
@@ -20,15 +28,18 @@
 }
 
 .ripple-button:hover {
-  background-color: royalblue;
+  background-color: rgb(100, 124, 195);
 }
 
 .ripple {
   position: absolute;
   background: rgba(255, 255, 255, 0.5);
-  border-radius: 50%;
+  border-radius: 100%;
   transform: scale(0);
-  animation: ripple-effect 0.8s ease-out forwards;
+  animation: ripple-effect 0.9s ease-out forwards;
+  pointer-events: none;
+  transform-origin: center center;
+  opacity: 1;
 }
 
 @keyframes ripple-effect {
