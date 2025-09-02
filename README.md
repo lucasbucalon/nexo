@@ -27,4 +27,4 @@
 
 <br/>
 
-<img src="/images/imagenexo.png" alt="Imagem da logo do Nexo" />
+<img width="40%" src="/images/imagenexo.png" alt="Imagem da logo do Nexo" />
