@@ -21,15 +21,27 @@ export const routes = [
 
 // ---------- Mapas de recursos ----------
 export const imageMap = {
-  logo: {
-    src: "/constant/images/imagenexo.png",
-    alt: "imagem da logo",
+  foto: {
+    src: "/constant/images/foto_perfil.png",
+    alt: "imagem do perfil",
     title: "Lucas Bucalon",
     fetchpriority: "low",
-    dark: "/constant/images/imagenexo.png",
+    dark: "/constant/images/foto_perfil.png",
     set: {
-      src: "/constant/images/imagenexo.png",
-      Dark: "/constant/images/imagenexo.png",
+      src: "/constant/images/foto_perfil.png",
+      Dark: "/constant/images/foto_perfil.png",
+      maxWidth: 768,
+    },
+  },
+  arte: {
+    src: "/constant/images/arte_perfil.png",
+    alt: "arte do perfil",
+    title: "Lucas Bucalon",
+    fetchpriority: "low",
+    dark: "/constant/images/arte_perfil.png",
+    set: {
+      src: "/constant/images/arte_perfil.png",
+      Dark: "/constant/images/arte_perfil.png",
       maxWidth: 768,
     },
   },
@@ -63,8 +75,8 @@ export const animated = {
   fade: {
     enabled: true,
     duration: 250,
-    useTranslate: false,
-    translateValue: "1px",
+    useTranslate: true,
+    translateValue: "5px",
   },
 };
 
