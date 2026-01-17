@@ -31,7 +31,7 @@ body {
   padding: 5%;
   overflow-x: hidden;
   overflow-y: scroll;
-  position: relative;
+  /* position: relative; */
   color: var(--font-color);
   background: linear-gradient(
     to right top,

@@ -1,40 +1,38 @@
 <style>
   .profile {
-    position: relative;
-    width: 100%;
-    height: 100%;
-    background-color: aliceblue;
+    display: flex;
+    flex-direction: column;
   }
 
   .image {
+    position: relative;
     display: flex;
     justify-content: center;
-    background-color: aliceblue;
+    padding: 0 0 30% 0;
+    /* background-color: aliceblue; */
   }
 
   .photo,
   .art {
     position: absolute;
   }
+
+  .art {
+    margin: -50px 0 0 80px;
+  }
 </style>
 
-<html class="profile">
-  <! -- Foto do usuário -- >
-  <div class="image">
-    <img class="photo" data-image="foto" />
-    <img class="art" data-image="arte" />
-  </div>
-  <! -- Foto do usuário -- >
+<html>
+  <section class="profile">
+    <! -- Foto do usuário -- >
+    <div class="image">
+      <img class="art" data-image="arte" />
+      <img class="photo" data-image="foto" />
+    </div>
+    <! -- Foto do usuário -- >
 
-  <! -- Nome do usuário -- >
-  <h1 class="name"></h1>
-  <! -- Nome do usuário -- >
-
-  <! -- Botão de modo escuro -- >
-  <button class="dark_mode"></button>
-  <! -- Botão de modo escuro -- >
-
-  <! -- Menu de navegação -- >
-  <nav class="menu"></nav>
-  <! -- Menu de navegação -- >
+    <! -- Nome do usuário -- >
+    <h1 class="name">João Lucas Bucalon</h1>
+    <! -- Nome do usuário -- >
+  </section>
 </html>
