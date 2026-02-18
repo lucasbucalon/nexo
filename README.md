@@ -10,21 +10,4 @@
 
 <br/>
 
-<h2>⚠️ Avisos Importantes</h2>
-<ul>
-  <li>O desenvolvimento do projeto ocorrerá às terças-feiras.</li>
-  <li>Eu serei o único responsável pelo design e pela programação.</li>
-</ul>
-
-<br/>
-
-<h2>🛠️ Tecnologias e Ferramentas</h2>
-<ul>
-  <li><strong>HTML, CSS, JavaScript</strong> (todas as linguagens utilizadas sem frameworks ou bibliotecas)</li>
-  <li><strong>Firebase, Node.js, Google Analytics</strong> (para backend, análise de dados e controle)</li>
-  <li><strong>VS Code, GitHub, Netlify</strong> (para codificação, controle de versão e hospedagem)</li>
-</ul>
-
-<br/>
-
 <img width="40%" src="/images/imagenexo.png" alt="Imagem da logo do Nexo" />
