@@ -1,16 +1,28 @@
 <!doctype html>
-<html lang="pt-br">
+<html lang="pt-br" data-theme="light">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/global.css" />
     <title>Persona_Nexo</title>
   </head>
   <body>
     <header data-component="Profile"></header>
 
+    <button id="theme-toggle" class="button-theme" aria-label="Alternar tema">
+      <span class="toggle-track">
+        <span class="toggle-thumb">
+          <my-icon data-icon="sun" class="icon sun"></my-icon>
+          <my-icon data-icon="moon" class="icon moon"></my-icon>
+        </span>
+      </span>
+    </button>
+
+    <hr />
+
     <div id="route"></div>
 
     <script type="module" src="/src/main.js"></script>
+    <script src="/js/theme.js"></script>
   </body>
 </html>

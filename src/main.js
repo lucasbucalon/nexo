@@ -29,7 +29,7 @@ export const imageMap = {
     dark: "/constant/images/foto_perfil.png",
     set: {
       src: "/constant/images/foto_perfil.png",
-      Dark: "/constant/images/foto_perfil.png",
+      dark: "/constant/images/foto_perfil.png",
       maxWidth: 768,
     },
   },
@@ -58,10 +58,16 @@ export const linkMap = {
 };
 
 export const iconMap = {
-  icon: {
-    src: "/constant/svg/icon.svg",
-    alt: "icon",
-    title: "icon",
+  sun: {
+    src: "/constant/icons/sun.svg",
+    alt: "sol",
+    title: "sol",
+  },
+
+  moon: {
+    src: "/constant/icons/moon.svg",
+    alt: "lua",
+    title: "lua",
   },
 };
 

@@ -1,0 +1,87 @@
+:root {
+  --toggle-width: 64px;
+  --toggle-height: 32px;
+  --thumb-size: 26px;
+  --transition: 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+
+  --bg-light: #868e9d;
+  --bg-dark: #1f2937;
+  --thumb-light: #ffffff;
+  --thumb-dark: #111827;
+}
+
+html[data-theme="light"] {
+  --track-bg: var(--bg-light);
+  --thumb-bg: var(--thumb-light);
+}
+
+html[data-theme="dark"] {
+  --track-bg: var(--bg-dark);
+  --thumb-bg: var(--thumb-dark);
+}
+
+.button-theme {
+  border: none;
+  background: none;
+  cursor: pointer;
+  padding: 0;
+}
+
+.toggle-track {
+  width: var(--toggle-width);
+  height: var(--toggle-height);
+  background: var(--track-bg);
+  border-radius: 999px;
+  display: flex;
+  align-items: center;
+  padding: 3px;
+  transition: background var(--transition);
+}
+
+.toggle-thumb {
+  width: var(--thumb-size);
+  height: var(--thumb-size);
+  background: var(--thumb-bg);
+  border-radius: 50%;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition:
+    transform var(--transition),
+    background var(--transition);
+}
+
+/* Movimento */
+html[data-theme="dark"] .toggle-thumb {
+  transform: translateX(32px);
+}
+
+/* Ícones */
+.icon {
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  fill: currentColor;
+  transition:
+    opacity var(--transition),
+    transform var(--transition);
+}
+
+.sun {
+  color: #f59e0b;
+}
+
+.moon {
+  color: #60a5fa;
+}
+
+html[data-theme="light"] .moon {
+  opacity: 0;
+  transform: scale(0.6) rotate(45deg);
+}
+
+html[data-theme="dark"] .sun {
+  opacity: 0;
+  transform: scale(0.6) rotate(-45deg);
+}
