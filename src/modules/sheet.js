@@ -50,7 +50,9 @@ export function fadeIn(el, duration = 200) {
 function onceTransitionEnd(el, timeoutMs = 250) {
   return new Promise((resolve) => {
     if (!el) return resolve();
+
     let resolved = false;
+
     const timer = setTimeout(() => {
       if (resolved) return;
       resolved = true;
@@ -115,6 +117,7 @@ export async function applyFade(el, render, durationOverride) {
   })();
 
   fadeMap.set(el, op);
+
   try {
     await op;
   } finally {
@@ -123,9 +126,15 @@ export async function applyFade(el, render, durationOverride) {
 }
 
 // ------------------------------
-// Smooth Scroll SPA
+// Smooth Scroll SPA (CORRIGIDO)
 // ------------------------------
-let smoothState = { initialized: false, cleanup: null };
+let smoothState = {
+  initialized: false,
+  cleanup: null,
+  target: 0,
+  current: 0,
+  running: false,
+};
 
 function clamp(value, min, max) {
   return Math.max(min, Math.min(max, value));
@@ -133,9 +142,6 @@ function clamp(value, min, max) {
 
 function initSmoothScroll(scrollCfg) {
   if (smoothState.initialized || !scrollCfg?.enabled) return;
-
-  const isTouch = "ontouchstart" in window || navigator.maxTouchPoints > 0;
-  if (isTouch && scrollCfg.mode !== "custom") return;
 
   const presets = {
     original: { ease: 1, stepMin: 0.5, stepMax: Infinity },
@@ -148,61 +154,79 @@ function initSmoothScroll(scrollCfg) {
       ? scrollCfg.custom || scrollCfg
       : presets[scrollCfg.mode] || presets.smooth;
 
-  let target = window.scrollY;
-  let current = target;
-  let running = false;
+  smoothState.current = window.scrollY;
+  smoothState.target = window.scrollY;
 
   function animate() {
-    const diff = target - current;
+    const diff = smoothState.target - smoothState.current;
+
     if (Math.abs(diff) > 0.5) {
       let step = diff * cfgScroll.ease;
       step = clamp(step, -cfgScroll.stepMax, cfgScroll.stepMax);
+
       if (Math.abs(step) < cfgScroll.stepMin)
         step = step > 0 ? cfgScroll.stepMin : -cfgScroll.stepMin;
-      current += step;
-      window.scrollTo(0, current);
+
+      smoothState.current += step;
+      window.scrollTo(0, smoothState.current);
       requestAnimationFrame(animate);
     } else {
-      current = target;
-      window.scrollTo(0, current);
-      running = false;
+      smoothState.current = smoothState.target;
+      window.scrollTo(0, smoothState.current);
+      smoothState.running = false;
     }
   }
 
   function goTo(newTarget) {
-    target = clamp(
+    smoothState.target = clamp(
       newTarget,
       0,
-      document.documentElement.scrollHeight - window.innerHeight
+      document.documentElement.scrollHeight - window.innerHeight,
     );
-    if (!running) {
-      running = true;
+
+    if (!smoothState.running) {
+      smoothState.running = true;
       requestAnimationFrame(animate);
     }
   }
 
   function onWheel(e) {
     const tag = e.target?.tagName;
+
     if (
       e.ctrlKey ||
       ["INPUT", "TEXTAREA", "SELECT"].includes(tag) ||
       e.target.isContentEditable
     )
       return;
+
     e.preventDefault();
-    goTo(target + e.deltaY);
+    goTo(smoothState.target + e.deltaY);
   }
 
   window.addEventListener("wheel", onWheel, { passive: false });
 
+  // 🔥 SINCRONIZA SE ALGUÉM USAR window.scrollTo DIRETAMENTE
+  window.addEventListener("scroll", () => {
+    if (!smoothState.running) {
+      smoothState.current = window.scrollY;
+      smoothState.target = window.scrollY;
+    }
+  });
+
+  // 🔥 Método público para uso externo
+  window.__sheetScrollTo = (y) => {
+    smoothState.current = window.scrollY;
+    goTo(y);
+  };
+
   smoothState.initialized = true;
+
   smoothState.cleanup = () => {
     window.removeEventListener("wheel", onWheel);
     smoothState.initialized = false;
-    smoothState.cleanup = null;
+    smoothState.running = false;
   };
-
-  console.log("Smooth scroll initialized:", cfgScroll);
 }
 
 // ------------------------------

@@ -95,6 +95,7 @@ function applyLinks(root = document) {
 // ------------------
 // CUSTOM ELEMENT <my-icon>
 // ------------------
+
 class IconElement extends HTMLElement {
   connectedCallback() {
     this.render();
@@ -104,22 +105,24 @@ class IconElement extends HTMLElement {
     const name = this.dataset.icon;
     const cfg = iconMap[name];
 
-    if (!cfg) return;
+    if (!cfg) {
+      console.warn(`⚠️ Ícone "${name}" não encontrado no iconMap`);
+      return;
+    }
 
-    this.innerHTML = "";
+    const src = cfg.src || cfg;
 
-    const img = document.createElement("img");
-    img.src = cfg.src || cfg;
-    img.alt = this.getAttribute("alt") || name;
-    img.title = this.getAttribute("title") || name;
-    img.decoding = "async";
-    img.loading = "lazy";
-    img.setAttribute("role", "img");
+    // Define variável CSS com URL do SVG
+    this.style.setProperty("--icon-url", `url("${src}")`);
 
-    if (this.hasAttribute("width")) img.width = this.getAttribute("width");
-    if (this.hasAttribute("height")) img.height = this.getAttribute("height");
+    // Define dimensões se existirem
+    if (this.hasAttribute("width")) {
+      this.style.width = this.getAttribute("width") + "px";
+    }
 
-    this.appendChild(img);
+    if (this.hasAttribute("height")) {
+      this.style.height = this.getAttribute("height") + "px";
+    }
   }
 }
 

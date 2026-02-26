@@ -17,6 +17,9 @@ export const config = {
 export const routes = [
   { path: /^\/home$/, page: "/pages/home" },
   { path: /^\/about$/, page: "/pages/about" },
+  { path: /^\/work$/, page: "/pages/work" },
+  { path: /^\/hooby$/, page: "/pages/hooby" },
+  { path: /^\/gallery$/, page: "/pages/gallery" },
 ];
 
 // ---------- Mapas de recursos ----------
@@ -68,6 +71,42 @@ export const iconMap = {
     src: "/constant/icons/moon.svg",
     alt: "lua",
     title: "lua",
+  },
+
+  home: {
+    src: "/constant/icons/home.svg",
+    alt: "home",
+    title: "home",
+  },
+
+  about: {
+    src: "/constant/icons/about.svg",
+    alt: "sobre",
+    title: "sobre",
+  },
+
+  work: {
+    src: "/constant/icons/work.svg",
+    alt: "trabalho",
+    title: "trabalho",
+  },
+
+  hooby: {
+    src: "/constant/icons/hooby.svg",
+    alt: "hobby",
+    title: "hobby",
+  },
+
+  gallery: {
+    src: "/constant/icons/gallery.svg",
+    alt: "galeria",
+    title: "galeria",
+  },
+
+  footer: {
+    src: "/constant/icons/footer.svg",
+    alt: "rodapé",
+    title: "rodapé",
   },
 };
 

@@ -1,4 +1,82 @@
-<ul>
-  <li><a href="#/home" page>Home</a></li>
-  <li><a href="#/about" page>Sobre</a></li>
+<style>
+  .box_menu {
+    background-color: var(--bg-menu);
+    border-radius: var(--box-radius);
+    display: flex;
+    justify-content: space-around;
+    padding: 15px 3%;
+    margin: 30px 10% 0;
+    list-style: none;
+  }
+
+  .icon_menu {
+    color: var(--font-color);
+    width: 2.5rem;
+    height: 2.5rem;
+    transition: color 0.2s ease-in-out;
+  }
+
+  .box_menu a.active .icon_menu,
+  .icon_menu:hover {
+    color: var(--hover);
+  }
+</style>
+
+<ul class="box_menu">
+  <li>
+    <a href="#/home" page
+      ><my-icon data-icon="home" class="icon_menu"></my-icon
+    ></a>
+  </li>
+  <li>
+    <a href="#/about" page
+      ><my-icon data-icon="about" class="icon_menu"></my-icon
+    ></a>
+  </li>
+  <li>
+    <a href="#/work" page
+      ><my-icon data-icon="work" class="icon_menu"></my-icon
+    ></a>
+  </li>
+  <li>
+    <a href="#/hooby" page
+      ><my-icon data-icon="hooby" class="icon_menu"></my-icon
+    ></a>
+  </li>
+  <li>
+    <a href="#/gallery" page
+      ><my-icon data-icon="gallery" class="icon_menu"></my-icon
+    ></a>
+  </li>
+  <li>
+    <a href="#footer" move
+      ><my-icon data-icon="footer" class="icon_menu"></my-icon
+    ></a>
+  </li>
 </ul>
+
+<script>
+  function updateActiveMenu() {
+    const links = document.querySelectorAll(".box_menu a");
+    const currentHash = window.location.hash;
+
+    links.forEach((link) => {
+      if (link.getAttribute("href") === currentHash) {
+        link.classList.add("active");
+      } else {
+        link.classList.remove("active");
+      }
+    });
+  }
+
+  window.addEventListener("hashchange", updateActiveMenu);
+
+  document.addEventListener("spa:pageLoaded", updateActiveMenu);
+
+  window.addEventListener("load", () => {
+    if (!window.location.hash) {
+      window.location.hash = "#/home";
+    }
+    updateActiveMenu();
+  });
+</script>
