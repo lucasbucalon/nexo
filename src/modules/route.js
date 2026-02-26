@@ -65,7 +65,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Se não houver hash → define página inicial
     if (!hash) {
-      window.location.replace(`#/${config.pageInit}`);
+      window.location.replace(`#${config.pageInit}`);
       return;
     }
 
