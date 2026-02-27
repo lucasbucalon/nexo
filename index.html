@@ -3,7 +3,14 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="/css/global.css" />
+    <link
+      rel="preload"
+      href="/css/global.css"
+      as="style"
+      onload="this.rel = 'stylesheet'"
+    />
+    <noscript><link rel="stylesheet" href="/css/global.css" /></noscript>
+    <link rel="preload" as="image" href="/constant/images/foto_perfil.png" />
     <title>Persona_Nexo</title>
   </head>
   <body>

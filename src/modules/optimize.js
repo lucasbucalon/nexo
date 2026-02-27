@@ -28,16 +28,39 @@ const loadedAssets = { css: new Set(), js: new Set() };
 // ------------------------------
 // CARREGAMENTO DINÂMICO DE CSS/JS
 // ------------------------------
-export function loadCSS(href) {
-  if (loadedAssets.css.has(href)) return Promise.resolve();
+export function loadCSS(href, { preload = false } = {}) {
+  const hrefResolved = new URL(href, document.baseURI).href;
+  if (loadedAssets.css.has(hrefResolved)) return Promise.resolve();
   return new Promise((resolve) => {
-    const link = document.createElement("link");
-    link.rel = "stylesheet";
-    link.href = href;
-    link.onload = resolve;
-    link.onerror = resolve;
-    document.head.appendChild(link);
-    loadedAssets.css.add(href);
+    let link;
+    if (preload) {
+      link = document.createElement("link");
+      link.rel = "preload";
+      link.as = "style";
+      link.href = hrefResolved;
+      link.onload = () => {
+        try {
+          link.rel = "stylesheet";
+        } catch (e) {}
+        resolve();
+      };
+      link.onerror = () => {
+        try {
+          link.rel = "stylesheet";
+        } catch (e) {}
+        resolve();
+      };
+      document.head.appendChild(link);
+    } else {
+      link = document.createElement("link");
+      link.rel = "stylesheet";
+      link.href = hrefResolved;
+      link.onload = resolve;
+      link.onerror = resolve;
+      document.head.appendChild(link);
+    }
+
+    loadedAssets.css.add(hrefResolved);
   });
 }
 
@@ -65,7 +88,7 @@ const lazyObserver = new IntersectionObserver(
       const el = entry.target;
 
       for (const cls of Array.from(el.classList).filter((c) =>
-        c.includes("-")
+        c.includes("-"),
       )) {
         const [category, name] = cls.split("-");
         const css = `${config.dirs.models}/${category}/${name}/styles.css`;
@@ -82,21 +105,19 @@ const lazyObserver = new IntersectionObserver(
       }
 
       if (el.dataset.lazy) {
-        import(el.dataset.lazy)
-          .then((m) => m.init?.(el))
-          .catch(() => {});
+        import(el.dataset.lazy).then((m) => m.init?.(el)).catch(() => {});
       }
 
       el.querySelectorAll("script[type='module'][src$='script.js']").forEach(
         (s) => {
           loadJS(s.src).catch(() => {});
-        }
+        },
       );
 
       lazyObserver.unobserve(el);
     });
   },
-  { threshold: 0.1 }
+  { threshold: 0.1 },
 );
 
 // ------------------------------
@@ -113,9 +134,7 @@ export function initLazyLoad() {
 // ------------------------------
 export async function lazyLoadRoute() {
   document.querySelectorAll("[data-lazy]").forEach((el) => {
-    import(el.dataset.lazy)
-      .then((m) => m.init?.(el))
-      .catch(() => {});
+    import(el.dataset.lazy).then((m) => m.init?.(el)).catch(() => {});
   });
 
   document

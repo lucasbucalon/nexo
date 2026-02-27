@@ -13,7 +13,7 @@ function renderProps(template, props = {}) {
   Object.keys(props).forEach((key) => {
     const safe = String(props[key]).replace(
       /[&<>"]/g,
-      (m) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[m])
+      (m) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[m],
     );
     rendered = rendered.replace(new RegExp(`{{\\s*${key}\\s*}}`, "g"), safe);
   });
@@ -43,7 +43,7 @@ export async function loadComponent(componentName, container, props = {}) {
   temp.innerHTML = renderedHTML;
 
   const stylePromises = Array.from(
-    temp.querySelectorAll('link[rel="stylesheet"]')
+    temp.querySelectorAll('link[rel="stylesheet"]'),
   ).map((link) => {
     if (!link.href || loadedStyles.has(link.href)) return Promise.resolve();
     return new Promise((resolve) => {
