@@ -8,8 +8,8 @@
 
 :root {
   /* COR DE FUNDO */
-  --bg-gradient-start: rgb(21, 12, 63);
-  --bg-gradient-end: #1e1e1e;
+  --bg-gradient-start: rgb(47, 29, 127);
+  --bg-gradient-end: #424242;
   --bg-menu: rgba(255, 255, 255, 0.2);
 
   /* COR DO TEXTO */
@@ -21,6 +21,8 @@
 }
 
 [data-theme="dark"] {
+  --bg-gradient-start: rgb(21, 12, 63);
+  --bg-gradient-end: #1e1e1e;
 }
 
 html {

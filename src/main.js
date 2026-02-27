@@ -1,6 +1,6 @@
+import { initAssets, applyAssets, setAssetMaps } from "./modules/utils.js";
 import { lazyLoadRoute } from "./modules/optimize.js";
 import { configureSheet } from "./modules/sheet.js";
-import { initAssets, applyAssets } from "./modules/utils.js";
 import "./modules/route.js";
 import "./modules/layouts.js";
 import "./modules/models.js";
@@ -127,6 +127,11 @@ export const animated = {
 
 // ---------- Inicialização ----------
 document.addEventListener("DOMContentLoaded", () => {
+  setAssetMaps({
+    imageMap,
+    linkMap,
+    iconMap,
+  });
   configureSheet(animated);
   initAssets();
 

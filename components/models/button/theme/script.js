@@ -1,4 +1,6 @@
-const html = document.documentElement;
+function algumaCoisa() {
+  const html = document.documentElement;
+}
 const toggle = document.getElementById("button-theme");
 
 function getSystemTheme() {
@@ -21,10 +23,19 @@ function initTheme() {
   applyTheme(saved || getSystemTheme());
 }
 
-toggle.addEventListener("click", () => {
-  const current = html.dataset.theme;
-  const next = current === "dark" ? "light" : "dark";
-  applyTheme(next);
-});
+document.addEventListener("DOMContentLoaded", () => {
+  const toggle = document.querySelector(".toggle");
+  const html = document.documentElement;
 
-initTheme();
+  if (toggle) {
+    toggle.addEventListener("click", () => {
+      const current = html.dataset.theme;
+      const next = current === "dark" ? "light" : "dark";
+      applyTheme(next);
+    });
+  } else {
+    console.warn("Toggle não encontrado no DOM");
+  }
+
+  initTheme();
+});
