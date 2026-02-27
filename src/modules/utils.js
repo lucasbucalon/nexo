@@ -111,12 +111,27 @@ function applyLinks(root = document) {
       return;
     }
 
-    link.href = cfg.href;
+    // valida href para evitar javascript: e outros protocolos perigosos
+    const href = String(cfg.href || "").trim();
+    if (!href || href.toLowerCase().startsWith("javascript:")) {
+      console.warn(`[Assets] data-link="${name}" possui href inválido.`);
+      return;
+    }
+
+    link.href = href;
     link.title = cfg.title ?? name;
 
     if (cfg.target) link.target = cfg.target;
     if (cfg.rel) link.rel = cfg.rel;
     else if (cfg.target === "_blank") link.rel = "noopener noreferrer";
+    // garantia extra: sempre remove referencias window-opener se target=_blank
+    if (link.target === "_blank") {
+      const existing = link.getAttribute("rel") || "";
+      const parts = new Set(existing.split(/\s+/).filter(Boolean));
+      parts.add("noopener");
+      parts.add("noreferrer");
+      link.setAttribute("rel", Array.from(parts).join(" "));
+    }
 
     if (cfg.type) link.type = cfg.type;
     if (cfg["aria-label"]) link.setAttribute("aria-label", cfg["aria-label"]);

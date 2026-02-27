@@ -20,6 +20,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
       const html = await response.text();
 
+      // atualiza meta tags (title, description, canonical, OG) a partir do fragmento carregado
+      try {
+        updateHeadFromHTML(html, pagePath);
+      } catch (err) {
+        console.warn("Falha ao atualizar head:", err);
+      }
+
       await applyFade(routeEl, async () => {
         routeEl.innerHTML = html;
         reexecuteScripts();
@@ -46,14 +53,77 @@ document.addEventListener("DOMContentLoaded", () => {
     scripts.forEach((oldScript) => {
       const newScript = document.createElement("script");
 
+      // preserva todos os atributos (type, module, defer, async, crossorigin, etc.)
+      Array.from(oldScript.attributes).forEach((attr) => {
+        newScript.setAttribute(attr.name, attr.value);
+      });
+
       if (oldScript.src) {
-        newScript.src = oldScript.src;
-        newScript.async = false;
+        try {
+          newScript.src = new URL(oldScript.src, document.baseURI).href;
+        } catch (e) {
+          newScript.src = oldScript.src;
+        }
+        // mantém async/defer conforme o atributo original
+        if (oldScript.hasAttribute("async")) newScript.async = true;
+        if (oldScript.hasAttribute("defer")) newScript.defer = true;
       } else {
         newScript.textContent = oldScript.textContent;
       }
 
       oldScript.replaceWith(newScript);
+    });
+  }
+
+  /* =========================================================
+     Atualiza head (title, meta description, og, canonical)
+  ========================================================= */
+  function updateOrCreateTag(selector, tagName, attrs) {
+    let el = document.head.querySelector(selector);
+    if (!el) {
+      el = document.createElement(tagName);
+      document.head.appendChild(el);
+    }
+    Object.keys(attrs).forEach((k) => el.setAttribute(k, attrs[k]));
+    return el;
+  }
+
+  function updateHeadFromHTML(html, pagePath) {
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(html, "text/html");
+
+    const title =
+      doc.querySelector("title")?.textContent ||
+      doc.querySelector("[data-page-title]")?.textContent;
+    if (title) document.title = title;
+
+    const metaDesc = doc
+      .querySelector('meta[name="description"]')
+      ?.getAttribute("content");
+    if (metaDesc)
+      updateOrCreateTag('meta[name="description"]', "meta", {
+        name: "description",
+        content: metaDesc,
+      });
+
+    // Open Graph
+    doc.querySelectorAll('meta[property^="og:"]').forEach((m) => {
+      const prop = m.getAttribute("property");
+      const content = m.getAttribute("content");
+      if (prop && content)
+        updateOrCreateTag(`meta[property="${prop}"]`, "meta", {
+          property: prop,
+          content,
+        });
+    });
+
+    // canonical -> usa URL atual (inclui hash) para SPAs
+    const canonical =
+      doc.querySelector('link[rel="canonical"]')?.getAttribute("href") ||
+      window.location.href;
+    updateOrCreateTag('link[rel="canonical"]', "link", {
+      rel: "canonical",
+      href: canonical,
     });
   }
 
@@ -166,5 +236,28 @@ document.addEventListener("DOMContentLoaded", () => {
   window.addEventListener("hashchange", resolveRoute);
 
   // Inicialização
-  resolveRoute();
+  // Espera sinal 'framework:ready' disparado por main.js para evitar race
+  // conditions onde assets/maps ainda não foram registrados.
+  let resolved = false;
+
+  function doResolve() {
+    if (resolved) return;
+    resolved = true;
+    resolveRoute();
+  }
+
+  if (window.__frameworkReady) {
+    doResolve();
+  } else {
+    const onReady = () => {
+      doResolve();
+      document.removeEventListener("framework:ready", onReady);
+    };
+    document.addEventListener("framework:ready", onReady);
+
+    // Fallback para não travar indefinidamente
+    setTimeout(() => {
+      doResolve();
+    }, 300);
+  }
 });

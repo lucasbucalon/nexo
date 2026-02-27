@@ -136,9 +136,18 @@ document.addEventListener("DOMContentLoaded", () => {
   initAssets();
 
   document.addEventListener("spa:pageLoaded", (e) => {
-    applyAssets(e.target);
+    const container = e.detail?.container || e.target || document;
+    try {
+      applyAssets(container);
+    } catch (err) {
+      console.warn("applyAssets falhou:", err);
+    }
     lazyLoadRoute();
   });
+
+  // sinaliza que o framework já está pronto (assets e handlers registrados)
+  window.__frameworkReady = true;
+  document.dispatchEvent(new Event("framework:ready"));
 
   console.log("Main.js initialized ✅");
 });
