@@ -33,7 +33,7 @@ export const animated = {
   },
   fade: {
     enabled: true,
-    duration: 250,
+    duration: 300,
     useTranslate: true,
     translateValue: "5px",
   },
