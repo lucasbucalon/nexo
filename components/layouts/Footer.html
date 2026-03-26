@@ -1,6 +1,7 @@
 <style>
-  #footer p {
-    padding: 50px 0;
+  #footer em {
+    padding: 70px 0 100px 0;
+    display: block;
   }
 
   #footer .icons {
@@ -19,44 +20,49 @@
   }
 
   .icon_footer {
-    width: 2.8rem;
-    height: 2.8rem;
+    width: 2.7rem;
+    height: 2.7rem;
     color: white;
-    transition: all 0.3s ease-in-out;
-  }
-
-  .icon_footer:hover {
-    color: var(--hover);
   }
 
   a:hover {
-    transform: scale(1.1);
+    transform: scale(1.08);
   }
 
   a:hover .icon_footer {
     color: var(--hover);
+    transform: scale(1.07);
+    filter: contrast(1.05) saturate(1.05);
   }
 </style>
 
 <section id="footer">
   <div class="icons">
-    <a href="/#"
+    <a href="/#" data-tooltip="Facebook"
       ><my-icon data-icon="facebook" class="icon_footer"></my-icon
     ></a>
-    <a href="/#"
+    <a href="/#" data-tooltip="Instagram"
       ><my-icon data-icon="instagram" class="icon_footer"></my-icon
     ></a>
-    <a href="/#"><my-icon data-icon="tiktok" class="icon_footer"></my-icon></a>
-    <a href="/#"
+    <a href="/#" data-tooltip="TikTok"
+      ><my-icon data-icon="tiktok" class="icon_footer"></my-icon
+    ></a>
+    <a href="/#" data-tooltip="WhatsApp"
       ><my-icon data-icon="whatsapp" class="icon_footer"></my-icon
     ></a>
-    <a href="/#"
+    <a href="/#" data-tooltip="LinkedIn"
       ><my-icon data-icon="linkedin" class="icon_footer"></my-icon
     ></a>
-    <a href="/#"><my-icon data-icon="github" class="icon_footer"></my-icon></a>
-    <a href="/#"><my-icon data-icon="email" class="icon_footer"></my-icon></a>
-    <a href="/#"><my-icon data-icon="doc" class="icon_footer"></my-icon></a>
+    <a href="/#" data-tooltip="GitHub"
+      ><my-icon data-icon="github" class="icon_footer"></my-icon
+    ></a>
+    <a href="/#" data-tooltip="Email"
+      ><my-icon data-icon="email" class="icon_footer"></my-icon
+    ></a>
+    <a href="/#" data-tooltip="Currículo"
+      ><my-icon data-icon="doc" class="icon_footer"></my-icon
+    ></a>
   </div>
 
-  <p>© 2022 Lucas Bucalon - Todos os direitos reservados.</p>
+  <em>© 2022 Lucas Bucalon - Todos os direitos reservados.</em>
 </section>

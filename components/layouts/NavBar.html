@@ -4,52 +4,53 @@
     border-radius: var(--box-radius);
     display: flex;
     justify-content: space-around;
-    padding: 15px 3%;
+    padding: 15px 0;
     margin: 30px 10% 0;
-    list-style: none;
   }
 
   .icon_menu {
-    color: var(--font-color);
     width: 2.5rem;
     height: 2.5rem;
-    transition: color 0.2s ease-in-out;
   }
 
   .box_menu a.active .icon_menu,
   .icon_menu:hover {
     color: var(--hover);
   }
+
+  .box_menu a[data-tooltip] {
+    --tooltip-offset: 18px;
+  }
 </style>
 
 <ul class="box_menu">
   <li>
-    <a href="#/home" page
+    <a href="#/home" page data-tooltip="Inicio"
       ><my-icon data-icon="home" class="icon_menu"></my-icon
     ></a>
   </li>
   <li>
-    <a href="#/about" page
+    <a href="#/about" page data-tooltip="Sobre"
       ><my-icon data-icon="about" class="icon_menu"></my-icon
     ></a>
   </li>
   <li>
-    <a href="#/work" page
+    <a href="#/work" page data-tooltip="Trabalho"
       ><my-icon data-icon="work" class="icon_menu"></my-icon
     ></a>
   </li>
   <li>
-    <a href="#/hooby" page
+    <a href="#/hooby" page data-tooltip="Hobbies"
       ><my-icon data-icon="hooby" class="icon_menu"></my-icon
     ></a>
   </li>
   <li>
-    <a href="#/gallery" page
+    <a href="#/gallery" page data-tooltip="Galeria"
       ><my-icon data-icon="gallery" class="icon_menu"></my-icon
     ></a>
   </li>
   <li>
-    <a href="#footer" move
+    <a href="#footer" move data-tooltip="Rodapé"
       ><my-icon data-icon="footer" class="icon_menu"></my-icon
     ></a>
   </li>
