@@ -1,3 +1,62 @@
+<style>
+  #footer p {
+    padding: 50px 0;
+  }
+
+  #footer .icons {
+    display: flex;
+    justify-content: space-around;
+  }
+
+  #footer a {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--bg-menu);
+    border-radius: 100%;
+    padding: 10px;
+    transition: all 0.3s ease-in-out;
+  }
+
+  .icon_footer {
+    width: 2.8rem;
+    height: 2.8rem;
+    color: white;
+    transition: all 0.3s ease-in-out;
+  }
+
+  .icon_footer:hover {
+    color: var(--hover);
+  }
+
+  a:hover {
+    transform: scale(1.1);
+  }
+
+  a:hover .icon_footer {
+    color: var(--hover);
+  }
+</style>
+
 <section id="footer">
-  <h1>Footer</h1>
+  <div class="icons">
+    <a href="/#"
+      ><my-icon data-icon="facebook" class="icon_footer"></my-icon
+    ></a>
+    <a href="/#"
+      ><my-icon data-icon="instagram" class="icon_footer"></my-icon
+    ></a>
+    <a href="/#"><my-icon data-icon="tiktok" class="icon_footer"></my-icon></a>
+    <a href="/#"
+      ><my-icon data-icon="whatsapp" class="icon_footer"></my-icon
+    ></a>
+    <a href="/#"
+      ><my-icon data-icon="linkedin" class="icon_footer"></my-icon
+    ></a>
+    <a href="/#"><my-icon data-icon="github" class="icon_footer"></my-icon></a>
+    <a href="/#"><my-icon data-icon="email" class="icon_footer"></my-icon></a>
+    <a href="/#"><my-icon data-icon="doc" class="icon_footer"></my-icon></a>
+  </div>
+
+  <p>© 2022 Lucas Bucalon - Todos os direitos reservados.</p>
 </section>

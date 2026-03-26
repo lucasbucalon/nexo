@@ -108,6 +108,50 @@ export const iconMap = {
     alt: "rodapé",
     title: "rodapé",
   },
+
+  facebook: {
+    src: "/constant/icons/facebook.svg",
+    alt: "facebook",
+    title: "facebook",
+  },
+
+  instagram: {
+    src: "/constant/icons/instagram.svg",
+    alt: "instagram",
+    title: "instagram",
+  },
+
+  linkedin: {
+    src: "/constant/icons/linkedin.svg",
+    alt: "linkedin",
+    title: "linkedin",
+  },
+  whatsapp: {
+    src: "/constant/icons/whatsapp.svg",
+    alt: "whatsapp",
+    title: "whatsapp",
+  },
+  github: {
+    src: "/constant/icons/github.svg",
+    alt: "github",
+    title: "github",
+  },
+  email: {
+    src: "/constant/icons/email.svg",
+    alt: "email",
+    title: "email",
+  },
+  doc: {
+    src: "/constant/icons/doc.svg",
+    alt: "document",
+    title: "document",
+  },
+
+  tiktok: {
+    src: "/constant/icons/tiktok.svg",
+    alt: "tiktok",
+    title: "tiktok",
+  },
 };
 
 // ---------- Configurações de animação ----------
