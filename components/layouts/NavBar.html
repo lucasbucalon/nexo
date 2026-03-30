@@ -13,17 +13,17 @@
     height: 2.5rem;
   }
 
-  .box_menu a.active .icon_menu,
-  .icon_menu:hover {
+  .box_menu a.active,
+  a:hover {
     color: var(--hover);
   }
 
-  .box_menu a[data-tooltip] {
-    --tooltip-offset: 18px;
+  .box_menu a {
+    --tooltip-offset: -45px;
   }
 </style>
 
-<ul class="box_menu">
+<ul class="box_menu effect-ripple">
   <li>
     <a href="#/home" page data-tooltip="Inicio"
       ><my-icon data-icon="home" class="icon_menu"></my-icon

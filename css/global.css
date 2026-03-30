@@ -102,33 +102,23 @@ my-icon {
   image-rendering: crisp-edges;
 }
 
-a[data-tooltip] {
-  position: relative;
-  --tooltip-offset: 8px;
-}
-
-a[data-tooltip]::after {
-  content: attr(data-tooltip);
-
-  position: absolute;
-  bottom: calc(100% + var(--tooltip-offset));
-  left: 50%;
-  transform: translateX(-50%) translateY(5px);
-
-  background: #111;
-  color: #fff;
-  font-size: 12px;
-  padding: 5px 8px;
+.tooltip-global {
+  position: fixed;
+  background: black;
+  color: white;
+  padding: 6px 10px;
   border-radius: 6px;
-
-  white-space: nowrap;
+  font-size: 12px;
   pointer-events: none;
-
   opacity: 0;
-  transition: all 0.2s ease;
+  transform: translate(-50%, 10px);
+  transition:
+    opacity 0.2s ease,
+    transform 0.2s ease;
+  z-index: 9999;
 }
 
-a[data-tooltip]:hover::after {
+.tooltip-global.show {
   opacity: 1;
-  transform: translateX(-50%) translateY(0);
+  transform: translate(-50%, var(--tooltip-offset));
 }

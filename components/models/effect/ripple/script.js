@@ -1,11 +1,11 @@
 window.Components = window.Components || {};
-window.Components["button-ripple"] = {
+window.Components["effect-ripple"] = {
   init: function () {
-    document.querySelectorAll(".button-ripple").forEach((button) => {
+    document.querySelectorAll(".effect-ripple").forEach((effect) => {
       let isTouching = false;
 
       function createRipple(e) {
-        const rect = button.getBoundingClientRect();
+        const rect = effect.getBoundingClientRect();
         const clientX = e.touches ? e.touches[0].clientX : e.clientX;
         const clientY = e.touches ? e.touches[0].clientY : e.clientY;
 
@@ -14,26 +14,26 @@ window.Components["button-ripple"] = {
         const radius = Math.sqrt(maxX ** 2 + maxY ** 2);
 
         const ripple = document.createElement("span");
-        ripple.classList.add("ripple_button");
+        ripple.classList.add("ripple_effect");
         ripple.style.width = ripple.style.height = `${radius * 2}px`;
         ripple.style.left = `${clientX - rect.left - radius}px`;
         ripple.style.top = `${clientY - rect.top - radius}px`;
 
-        button.querySelectorAll(".ripple_button").forEach((r) => r.remove());
-        button.appendChild(ripple);
+        effect.querySelectorAll(".ripple_effect").forEach((r) => r.remove());
+        effect.appendChild(ripple);
 
         function removeRipple() {
           ripple.classList.add("fade-out");
           setTimeout(() => ripple.remove(), 300);
         }
 
-        button.addEventListener("mouseup", removeRipple, { once: true });
-        button.addEventListener("mouseleave", removeRipple, { once: true });
-        button.addEventListener("touchend", removeRipple, { once: true });
-        button.addEventListener("touchcancel", removeRipple, { once: true });
+        effect.addEventListener("mouseup", removeRipple, { once: true });
+        effect.addEventListener("mouseleave", removeRipple, { once: true });
+        effect.addEventListener("touchend", removeRipple, { once: true });
+        effect.addEventListener("touchcancel", removeRipple, { once: true });
       }
 
-      button.addEventListener(
+      effect.addEventListener(
         "touchstart",
         (e) => {
           isTouching = true;
@@ -42,12 +42,12 @@ window.Components["button-ripple"] = {
         { passive: true },
       );
 
-      button.addEventListener("mousedown", (e) => {
+      effect.addEventListener("mousedown", (e) => {
         if (isTouching) return;
         createRipple(e);
       });
 
-      button.addEventListener("click", () => {
+      effect.addEventListener("click", () => {
         setTimeout(() => (isTouching = false), 300);
       });
     });

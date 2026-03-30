@@ -257,3 +257,74 @@ export function initAssets() {
   observeAssets();
   setupReactiveUpdates();
 }
+
+// --------------------------------------------------
+// TOOLTIPS (ESTÁVEL)
+// --------------------------------------------------
+
+let tooltip = null;
+let currentEl = null;
+
+document.addEventListener("mouseover", (e) => {
+  const el = e.target.closest("[data-tooltip]");
+  if (!el || el === currentEl) return;
+
+  currentEl = el;
+
+  if (tooltip) tooltip.remove();
+
+  tooltip = document.createElement("div");
+  tooltip.className = "tooltip-global";
+  tooltip.textContent = el.dataset.tooltip;
+
+  // pega offset correto (com fallback)
+  let offset = getComputedStyle(el).getPropertyValue("--tooltip-offset").trim();
+
+  if (!offset) offset = "10px";
+
+  tooltip.style.setProperty("--tooltip-offset", offset);
+
+  document.body.appendChild(tooltip);
+
+  const rect = el.getBoundingClientRect();
+
+  tooltip.style.top = rect.top + "px";
+  tooltip.style.left = rect.left + rect.width / 2 + "px";
+
+  requestAnimationFrame(() => {
+    tooltip.classList.add("show");
+  });
+});
+
+document.addEventListener("mouseout", (e) => {
+  const el = e.target.closest("[data-tooltip]");
+  if (!el || el !== currentEl) return;
+
+  if (tooltip) {
+    tooltip.remove();
+    tooltip = null;
+    currentEl = null;
+  }
+});
+
+// resolve bug do scroll
+window.addEventListener("scroll", () => {
+  // remove tooltip atual
+  if (tooltip) {
+    tooltip.remove();
+    tooltip = null;
+    currentEl = null;
+  }
+
+  // 🔥 força reativação se o mouse estiver parado em cima de algo
+  const el = document.elementFromPoint(
+    window.innerWidth / 2,
+    window.innerHeight / 2,
+  );
+
+  const target = el?.closest?.("[data-tooltip]");
+  if (!target) return;
+
+  // simula entrada novamente
+  target.dispatchEvent(new Event("mouseover", { bubbles: true }));
+});
