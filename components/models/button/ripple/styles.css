@@ -27,6 +27,13 @@
   background-color: rgb(100, 124, 195);
 }
 
+/* Aplicar hover apenas em dispositivos que suportam hover (evita efeitos estranhos em touch) */
+@media (hover: none) {
+  .button-ripple:hover {
+    background-color: inherit;
+  }
+}
+
 .ripple_button {
   position: absolute;
   background: rgba(255, 255, 255, 0.5);

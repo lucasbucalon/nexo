@@ -125,3 +125,20 @@ my-icon {
   opacity: 1;
   transform: translate(-50%, var(--tooltip-offset));
 }
+
+/* Ajustes para dispositivos sem hover (touch) */
+@media (hover: none) {
+  .tooltip-global {
+    /* um pouco maior para toque com o dedo */
+    font-size: 1.4rem;
+    transition-duration: 120ms;
+    transform: translate(-50%, calc(var(--tooltip-offset) + 6px));
+    pointer-events: auto;
+  }
+
+  /* reduz realces que só funcionam bem com mouse */
+  button:hover {
+    /* manter o estado activo via :active ou via JS */
+    background-color: inherit;
+  }
+}

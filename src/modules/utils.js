@@ -269,35 +269,49 @@ export function initAssets() {
 }
 
 // --------------------------------------------------
-// TOOLTIPS (ESTÁVEL)
+// TOOLTIPS (TOUCH-FRIENDLY)
 // --------------------------------------------------
 
 let tooltip = null;
 let currentEl = null;
+let longPressTimer = null;
+let longPressPointerId = null;
+let longPressStartPos = null;
+const LONG_PRESS_MS = 450;
+const MOVE_THRESHOLD = 10; // px
 
-document.addEventListener("mouseover", (e) => {
-  const el = e.target.closest("[data-tooltip]");
-  if (!el || el === currentEl) return;
+function clearLongPress() {
+  if (longPressTimer) {
+    clearTimeout(longPressTimer);
+    longPressTimer = null;
+    longPressPointerId = null;
+    longPressStartPos = null;
+  }
+}
 
-  currentEl = el;
+function hideTooltip() {
+  if (tooltip) {
+    tooltip.remove();
+    tooltip = null;
+    currentEl = null;
+  }
+}
 
+function showTooltipFor(el) {
+  if (!el) return;
   if (tooltip) tooltip.remove();
 
   tooltip = document.createElement("div");
   tooltip.className = "tooltip-global";
-  tooltip.textContent = el.dataset.tooltip;
+  tooltip.textContent = el.dataset.tooltip || "";
 
-  // pega offset correto (com fallback)
   let offset = getComputedStyle(el).getPropertyValue("--tooltip-offset").trim();
-
   if (!offset) offset = "10px";
-
   tooltip.style.setProperty("--tooltip-offset", offset);
 
   document.body.appendChild(tooltip);
 
   const rect = el.getBoundingClientRect();
-
   tooltip.style.top = rect.top + "px";
   tooltip.style.left = rect.left + rect.width / 2 + "px";
 
@@ -309,37 +323,74 @@ document.addEventListener("mouseover", (e) => {
       console.warn("[Tooltip] Falha ao aplicar classe 'show':", err);
     }
   });
+
+  currentEl = el;
+
+  // fecha o tooltip ao tocar fora
+  const onDocPointerDown = (ev) => {
+    if (
+      ev.target.closest &&
+      (ev.target.closest("[data-tooltip]") === el ||
+        ev.target.closest(".tooltip-global") === tooltip)
+    ) {
+      return; // tocou no próprio alvo ou tooltip
+    }
+    hideTooltip();
+    document.removeEventListener("pointerdown", onDocPointerDown, true);
+  };
+
+  document.addEventListener("pointerdown", onDocPointerDown, true);
+}
+
+// Mouse/pen: exibe normalmente ao passar o ponteiro
+document.addEventListener("pointerover", (e) => {
+  if (e.pointerType === "touch") return;
+  const el = e.target.closest("[data-tooltip]");
+  if (!el || el === currentEl) return;
+  showTooltipFor(el);
 });
 
-document.addEventListener("mouseout", (e) => {
+document.addEventListener("pointerout", (e) => {
+  if (e.pointerType === "touch") return;
   const el = e.target.closest("[data-tooltip]");
   if (!el || el !== currentEl) return;
-
-  if (tooltip) {
-    tooltip.remove();
-    tooltip = null;
-    currentEl = null;
-  }
+  hideTooltip();
 });
 
-// resolve bug do scroll
-window.addEventListener("scroll", () => {
-  // remove tooltip atual
-  if (tooltip) {
-    tooltip.remove();
-    tooltip = null;
-    currentEl = null;
-  }
+// Touch: long-press para exibir tooltip (não atrapalha scroll)
+document.addEventListener(
+  "pointerdown",
+  (e) => {
+    if (e.pointerType !== "touch") return;
+    const el = e.target.closest("[data-tooltip]");
+    if (!el) return;
 
-  // 🔥 força reativação se o mouse estiver parado em cima de algo
-  const el = document.elementFromPoint(
-    window.innerWidth / 2,
-    window.innerHeight / 2,
-  );
+    longPressStartPos = { x: e.clientX, y: e.clientY };
+    longPressPointerId = e.pointerId;
 
-  const target = el?.closest?.("[data-tooltip]");
-  if (!target) return;
+    longPressTimer = setTimeout(() => {
+      showTooltipFor(el);
+      longPressTimer = null;
+      longPressPointerId = null;
+      longPressStartPos = null;
+    }, LONG_PRESS_MS);
+  },
+  { passive: true },
+);
 
-  // simula entrada novamente
-  target.dispatchEvent(new Event("mouseover", { bubbles: true }));
+document.addEventListener("pointermove", (e) => {
+  if (!longPressTimer || e.pointerId !== longPressPointerId) return;
+  const dx = e.clientX - longPressStartPos.x;
+  const dy = e.clientY - longPressStartPos.y;
+  if (Math.hypot(dx, dy) > MOVE_THRESHOLD) clearLongPress();
 });
+
+document.addEventListener("pointerup", (e) => {
+  if (longPressTimer && e.pointerId === longPressPointerId) clearLongPress();
+});
+
+document.addEventListener("pointercancel", clearLongPress);
+
+// Esconde tooltip ao rolar ou redimensionar
+window.addEventListener("scroll", () => hideTooltip());
+window.addEventListener("resize", () => hideTooltip());
