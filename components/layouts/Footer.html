@@ -31,18 +31,22 @@
     color: white;
   }
 
-  a:hover {
-    transform: scale(1.08);
-  }
+  /* Aplicar hover apenas em dispositivos com suporte a hover (desktop)
+     evita efeitos persistentes em touch */
+  @media (hover: hover) and (pointer: fine) {
+    #footer a:hover {
+      transform: scale(1.08);
+    }
 
-  a:hover .icon_footer {
-    color: var(--hover);
-    transform: scale(1.07);
-    filter: contrast(1.05) saturate(1.05);
-  }
+    #footer a:hover .icon_footer {
+      color: var(--hover);
+      transform: scale(1.07);
+      filter: contrast(1.05) saturate(1.05);
+    }
 
-  a:hover p {
-    color: var(--hover);
+    #footer a:hover p {
+      color: var(--hover);
+    }
   }
 
   .return {

@@ -40,18 +40,17 @@ body {
   letter-spacing: 1px;
   text-rendering: optimizeLegibility;
   width: 100%;
-  height: 100vh;
+  /* usar min-height dinâmico para evitar problemas com 100vh em mobile
+     '100dvh' corrige navegadores modernos; '100vh' é fallback */
+  min-height: 100dvh;
+  min-height: 100vh;
+  height: auto;
   padding: 70px 5%;
   overflow-x: hidden;
-  overflow-y: scroll;
+  overflow-y: auto;
   position: relative;
   color: var(--font-color);
-  background: linear-gradient(
-    to right top,
-    var(--bg-gradient-start),
-    var(--bg-gradient-end) 80%
-  );
-  background-attachment: fixed;
+  background-color: var(--bg-gradient-start);
 }
 
 hr {
@@ -124,6 +123,32 @@ my-icon {
 .tooltip-global.show {
   opacity: 1;
   transform: translate(-50%, var(--tooltip-offset));
+}
+
+/* Background via pseudo-element: permite controle melhor em mobile vs desktop */
+body::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  /* deixar o pseudo-elemento bem atrás para não sobrepor camadas de efeito
+     (partículas, elementos posicionados etc.) */
+  z-index: -9999;
+  background: linear-gradient(
+    to right top,
+    var(--bg-gradient-start),
+    var(--bg-gradient-end) 80%
+  );
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center center;
+  pointer-events: none;
+}
+
+/* Em dispositivos com ponteiro fino (desktop), fixa o background para o efeito parallax */
+@media (hover: hover) and (pointer: fine) {
+  body::before {
+    position: fixed;
+  }
 }
 
 /* Ajustes para dispositivos sem hover (touch) */

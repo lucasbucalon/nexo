@@ -14,12 +14,18 @@
   }
 
   .box_menu a.active,
-  a:hover {
+  .box_menu a:hover {
     color: var(--hover);
   }
 
   .box_menu a {
     --tooltip-offset: -45px;
+    padding: 8px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 44px;
+    min-height: 44px;
   }
 
   @media (max-width: 768px) {
