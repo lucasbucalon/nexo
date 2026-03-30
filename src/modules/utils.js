@@ -85,10 +85,20 @@ function applyImages(root = document) {
     img.alt = cfg.alt ?? name;
     img.title = cfg.title ?? name;
     img.decoding = "async";
-    img.loading = "lazy";
+    // loading: use eager for prioritized images (fetchpriority or explicit priority)
+    const isPriorityImage =
+      Boolean(cfg.fetchpriority) ||
+      (typeof cfg.priority === "string" &&
+        ["high", "eager", "critical"].includes(cfg.priority.toLowerCase()));
+
+    img.loading = isPriorityImage ? "eager" : cfg.loading || "lazy";
 
     if (cfg.fetchpriority) {
-      img.fetchPriority = cfg.fetchpriority;
+      try {
+        img.fetchPriority = cfg.fetchpriority;
+      } catch (e) {
+        // alguns navegadores podem não suportar fetchPriority
+      }
     }
   });
 }
@@ -292,7 +302,12 @@ document.addEventListener("mouseover", (e) => {
   tooltip.style.left = rect.left + rect.width / 2 + "px";
 
   requestAnimationFrame(() => {
-    tooltip.classList.add("show");
+    if (!tooltip) return;
+    try {
+      tooltip.classList.add("show");
+    } catch (err) {
+      console.warn("[Tooltip] Falha ao aplicar classe 'show':", err);
+    }
   });
 });
 

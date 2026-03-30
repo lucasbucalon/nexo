@@ -12,35 +12,67 @@ window.loadConstants = async function (root = document) {
   root.querySelectorAll("[class*='-']").forEach((el) =>
     el.classList.forEach((c) => {
       if (c.includes("-")) classSet.add(c);
-    })
+    }),
   );
   const components = [...classSet];
-
-  components.forEach((comp) => {
+  // Verifica existência de arquivos antes de inserir links/scripts para evitar
+  // 404s e erros MIME (server retornando HTML).
+  const cssPromises = components.map(async (comp) => {
     const [category, name] = comp.split("-");
     if (!category || !name) return;
 
     const cssPath = `${config.dirs.models}/${category}/${name}/styles.css`;
-    if (!loadedCss.has(cssPath)) {
-      const link = document.createElement("link");
-      link.rel = "stylesheet";
-      link.href = cssPath;
-      document.head.appendChild(link);
-      loadedCss.add(cssPath);
+    if (loadedCss.has(cssPath)) return;
+
+    try {
+      const res = await fetch(cssPath, { method: "HEAD" });
+      if (!res.ok) {
+        console.warn(`[Framework] CSS não encontrado: ${cssPath}`);
+        loadedCss.add(cssPath);
+        return;
+      }
+    } catch (err) {
+      // Se HEAD falhar (alguns servidores não permitem), tentamos anexar mesmo assim
+      // para manter compatibilidade.
     }
+
+    const link = document.createElement("link");
+    link.rel = "stylesheet";
+    link.href = cssPath;
+    document.head.appendChild(link);
+    loadedCss.add(cssPath);
   });
 
-  const jsPromises = components.map((comp) => {
+  await Promise.all(cssPromises);
+
+  const jsPromises = components.map(async (comp) => {
     const [category, name] = comp.split("-");
-    if (!category || !name) return Promise.resolve();
+    if (!category || !name) return;
 
     const jsPath = `${config.dirs.models}/${category}/${name}/script.js`;
     if (loadedJs.has(jsPath)) {
-      if (window.Components?.[comp]?.init) window.Components[comp].init();
-      return Promise.resolve();
+      if (window.Components?.[comp]?.init) {
+        try {
+          window.Components[comp].init();
+        } catch (err) {
+          console.warn(`[Framework] Erro init componente ${comp}:`, err);
+        }
+      }
+      return;
     }
 
-    return new Promise((resolve) => {
+    try {
+      const head = await fetch(jsPath, { method: "HEAD" });
+      if (!head.ok) {
+        console.warn(`[Framework] Script não encontrado: ${jsPath}`);
+        loadedJs.add(jsPath);
+        return;
+      }
+    } catch (err) {
+      // fallback: tente carregar mesmo se HEAD falhar
+    }
+
+    await new Promise((resolve) => {
       const script = document.createElement("script");
       script.src = jsPath;
       script.defer = true;

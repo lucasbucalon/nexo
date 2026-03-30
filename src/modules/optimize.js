@@ -28,9 +28,21 @@ const loadedAssets = { css: new Set(), js: new Set() };
 // ------------------------------
 // CARREGAMENTO DINÂMICO DE CSS/JS
 // ------------------------------
-export function loadCSS(href, { preload = false } = {}) {
+export async function loadCSS(href, { preload = false } = {}) {
   const hrefResolved = new URL(href, document.baseURI).href;
-  if (loadedAssets.css.has(hrefResolved)) return Promise.resolve();
+  if (loadedAssets.css.has(hrefResolved)) return;
+
+  try {
+    const headResp = await fetch(hrefResolved, { method: "HEAD" });
+    if (!headResp.ok) {
+      console.warn(`[Optimize] CSS não encontrado: ${hrefResolved}`);
+      loadedAssets.css.add(hrefResolved);
+      return;
+    }
+  } catch (err) {
+    // HEAD pode falhar em alguns servidores; faremos fallback e tentaremos carregar o CSS.
+  }
+
   return new Promise((resolve) => {
     let link;
     if (preload) {
@@ -64,17 +76,33 @@ export function loadCSS(href, { preload = false } = {}) {
   });
 }
 
-export function loadJS(src, module = true) {
-  if (loadedAssets.js.has(src)) return Promise.resolve();
+export async function loadJS(src, module = true) {
+  const srcResolved = new URL(src, document.baseURI).href;
+  if (loadedAssets.js.has(srcResolved)) return;
+
+  try {
+    const headResp = await fetch(srcResolved, { method: "HEAD" });
+    if (!headResp.ok) {
+      console.warn(`[Optimize] Script não encontrado: ${srcResolved}`);
+      loadedAssets.js.add(srcResolved);
+      return;
+    }
+  } catch (err) {
+    // fallback: continue and try to load the script
+  }
+
   return new Promise((resolve, reject) => {
     const script = document.createElement("script");
-    script.src = src;
+    script.src = srcResolved;
     script.defer = true;
     if (module) script.type = "module";
     script.onload = () => resolve();
-    script.onerror = () => reject(new Error(`Falha ao carregar ${src}`));
+    script.onerror = () => {
+      console.warn(`[Optimize] Falha ao carregar ${srcResolved}`);
+      reject(new Error(`Falha ao carregar ${srcResolved}`));
+    };
     document.body.appendChild(script);
-    loadedAssets.js.add(src);
+    loadedAssets.js.add(srcResolved);
   });
 }
 
