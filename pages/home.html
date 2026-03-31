@@ -38,6 +38,19 @@
     background: var(--bg-menu);
   }
 
+  @media (max-width: 800px) {
+    .button-ripple:hover {
+      background-color: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--bg-menu);
+      transform: scale(1);
+    }
+
+    .button-ripple:hover,
+    button {
+      color: white;
+    }
+  }
+
   @media (max-width: 500px) {
     .home_page {
       flex-direction: column;
