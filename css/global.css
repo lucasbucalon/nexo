@@ -7,15 +7,12 @@
 }
 
 :root {
-  /* COR DE FUNDO */
   --bg-gradient-start: rgb(47, 29, 127);
   --bg-gradient-end: #424242;
   --bg-menu: rgba(255, 255, 255, 0.2);
 
-  /* COR DO TEXTO */
   --font-color: #ffffff;
 
-  /* VARIAVEIS STATICAS */
   --box-radius: 20px;
   --hover: #d06c2f;
 }
@@ -30,36 +27,48 @@ html {
   font-family: consolas, monospace;
   color-scheme: light dark;
   scroll-behavior: smooth;
-}
 
-/* Previne overflow horizontal em mobile e overscroll indesejado */
-html,
-body {
-  max-width: 100vw;
-  /* overflow-x: hidden; */
-  overscroll-behavior-x: none;
-}
-
-body {
-  margin: 0 auto;
-  text-align: center;
-  font-size: 1.6rem;
-  font-optical-sizing: auto;
-  letter-spacing: 1px;
-  text-rendering: optimizeLegibility;
-  width: 100%;
-  /* usar min-height dinâmico para evitar problemas com 100vh em mobile
-     '100dvh' corrige navegadores modernos; '100vh' é fallback */
-  min-height: 100dvh;
-  min-height: 100vh;
-  height: auto;
-  padding: 70px 5%;
+  /* 🔥 trava overflow corretamente */
   overflow-x: hidden;
   overflow-y: auto;
+}
+
+body {
+  margin: 0;
+  text-align: center;
+  font-size: 1.6rem;
+  letter-spacing: 1px;
+
+  width: 100%;
+  max-width: 100%;
+
+  min-height: 100dvh;
+  min-height: 100vh;
+
+  padding: 70px 5%;
+
   position: relative;
   color: var(--font-color);
   background-color: var(--bg-gradient-start);
 }
+
+/* 🔥 evita qualquer elemento vazar */
+img,
+video,
+iframe {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* 🔥 segurança contra overflow invisível */
+section,
+div,
+main {
+  max-width: 100%;
+}
+
+/* ------------------ */
 
 hr {
   margin: 70px 0;
@@ -84,18 +93,22 @@ a:focus-visible {
   outline-offset: 3px;
 }
 
+/* ------------------ MOBILE */
+
 @media (max-width: 768px) {
   html {
     font-size: 60%;
   }
+
   body {
-    padding: 70px 1%;
+    padding: 70px 3%; /* 🔥 reduz chance de overflow */
   }
 }
 
+/* ------------------ ICON */
+
 my-icon {
   display: inline-block;
-
   background-color: currentColor;
 
   -webkit-mask: var(--icon-url) no-repeat center;
@@ -108,9 +121,9 @@ my-icon {
     color 0.2s ease-in-out,
     transform 0.2s ease,
     filter 0.2s ease;
-  image-rendering: -webkit-optimize-contrast;
-  image-rendering: crisp-edges;
 }
+
+/* ------------------ TOOLTIP */
 
 .tooltip-global {
   position: fixed;
@@ -119,12 +132,15 @@ my-icon {
   padding: 6px 10px;
   border-radius: 6px;
   font-size: 12px;
+
   pointer-events: none;
   opacity: 0;
+
   transform: translate(-50%, 10px);
   transition:
     opacity 0.2s ease,
     transform 0.2s ease;
+
   z-index: 9999;
 }
 
@@ -133,45 +149,37 @@ my-icon {
   transform: translate(-50%, var(--tooltip-offset));
 }
 
-/* Background via pseudo-element: permite controle melhor em mobile vs desktop */
+/* ------------------ BACKGROUND */
+
 body::before {
   content: "";
-  position: absolute;
+  position: fixed; /* 🔥 importante */
   inset: 0;
-  /* deixar o pseudo-elemento bem atrás para não sobrepor camadas de efeito
-     (partículas, elementos posicionados etc.) */
   z-index: -9999;
+
   background: linear-gradient(
     to right top,
     var(--bg-gradient-start),
     var(--bg-gradient-end) 80%
   );
+
   background-size: cover;
   background-repeat: no-repeat;
-  background-position: center center;
+  background-position: center;
+
   pointer-events: none;
 }
 
-/* Em dispositivos com ponteiro fino (desktop), fixa o background para o efeito parallax */
-@media (hover: hover) and (pointer: fine) {
-  body::before {
-    position: fixed;
-  }
-}
+/* ------------------ TOUCH */
 
-/* Ajustes para dispositivos sem hover (touch) */
 @media (hover: none) {
   .tooltip-global {
-    /* um pouco maior para toque com o dedo */
     font-size: 1.4rem;
-    transition-duration: 120ms;
     transform: translate(-50%, calc(var(--tooltip-offset) + 6px));
     pointer-events: auto;
   }
 
-  /* reduz realces que só funcionam bem com mouse */
   button:hover {
-    /* manter o estado activo via :active ou via JS */
     background-color: inherit;
   }
 }
