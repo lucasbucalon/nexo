@@ -5,7 +5,7 @@
   overflow: hidden;
   outline: none;
   transition:
-    background 0.2s,
+    background 0.3s,
     transform 0.1s;
   -webkit-tap-highlight-color: transparent;
   touch-action: manipulation;

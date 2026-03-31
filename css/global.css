@@ -28,7 +28,6 @@ html {
   color-scheme: light dark;
   scroll-behavior: smooth;
 
-  /* 🔥 trava overflow corretamente */
   overflow-x: hidden;
   overflow-y: auto;
 }
