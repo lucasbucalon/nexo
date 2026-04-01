@@ -9,9 +9,9 @@
 html {
   font-size: 62.5%;
   font-family: consolas, monospace;
-  -webkit-text-size-adjust: 100%;
+  /* -webkit-text-size-adjust: 100%;
   -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  -moz-osx-font-smoothing: grayscale; */
 
   color-scheme: light dark;
   height: 100%;
@@ -19,10 +19,10 @@ html {
   scroll-behavior: smooth;
   overflow-x: hidden;
   overflow-y: auto;
-  scroll-padding-top: var(--header-height, 70px);
+  /* scroll-padding-top: var(--header-height, 70px); */
 
-  touch-action: manipulation;
-  -webkit-tap-highlight-color: transparent;
+  /* touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent; */
 }
 
 body {
@@ -37,7 +37,7 @@ body {
   min-height: 100vh;
 
   overflow: hidden;
-  overscroll-behavior-y: contain;
+  /* overscroll-behavior-y: contain; */
 
   padding: 70px 5%;
 
