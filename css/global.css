@@ -70,15 +70,3 @@ body::before {
 
   pointer-events: none;
 }
-
-@media (hover: hover) and (pointer: fine) {
-  #footer a:hover {
-    transform: scale(1.08);
-  }
-
-  #footer a:hover my-icon {
-    color: var(--hover);
-    transform: scale(1.07);
-    filter: contrast(1.05) saturate(1.05);
-  }
-}

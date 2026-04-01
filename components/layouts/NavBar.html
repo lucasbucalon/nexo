@@ -8,14 +8,9 @@
     margin: 30px 10% 0;
   }
 
-  .icon_menu {
+  .box_menu my-icon {
     width: 2.5rem;
     height: 2.5rem;
-  }
-
-  .box_menu a.active,
-  .box_menu a:hover {
-    color: var(--hover);
   }
 
   .box_menu a {
@@ -24,8 +19,16 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    /* min-width: 44px;
-    min-height: 44px; */
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .box_menu a:hover {
+      color: var(--hover);
+    }
+  }
+
+  .box_menu a.active {
+    color: var(--hover);
   }
 
   @media (max-width: 800px) {
@@ -44,32 +47,32 @@
 <ul class="box_menu effect-ripple">
   <li>
     <a href="#/home" page data-tooltip="Inicio"
-      ><my-icon data-icon="home" class="icon_menu"></my-icon
+      ><my-icon data-icon="home"></my-icon
     ></a>
   </li>
   <li>
     <a href="#/about" page data-tooltip="Sobre"
-      ><my-icon data-icon="about" class="icon_menu"></my-icon
+      ><my-icon data-icon="about"></my-icon
     ></a>
   </li>
   <li>
     <a href="#/work" page data-tooltip="Trabalho"
-      ><my-icon data-icon="work" class="icon_menu"></my-icon
+      ><my-icon data-icon="work"></my-icon
     ></a>
   </li>
   <li>
     <a href="#/hooby" page data-tooltip="Hobbies"
-      ><my-icon data-icon="hooby" class="icon_menu"></my-icon
+      ><my-icon data-icon="hooby"></my-icon
     ></a>
   </li>
   <li>
     <a href="#/gallery" page data-tooltip="Galeria"
-      ><my-icon data-icon="gallery" class="icon_menu"></my-icon
+      ><my-icon data-icon="gallery"></my-icon
     ></a>
   </li>
   <li>
     <a href="#footer" move data-tooltip="Rodapé"
-      ><my-icon data-icon="footer" class="icon_menu"></my-icon
+      ><my-icon data-icon="footer"></my-icon
     ></a>
   </li>
 </ul>

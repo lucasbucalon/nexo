@@ -8,30 +8,20 @@
   max-width: 400px;
   font-size: 1.8rem;
   color: white;
-  background-color: rgb(72, 72, 255);
-  border: none;
-  border-radius: 10px;
+  background-color: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--bg-menu);
+  border-radius: var(--box-radius);
   outline: none;
   transition:
     background 0.3s,
     transform 0.1s;
   -webkit-tap-highlight-color: transparent;
   touch-action: manipulation;
+  margin-top: 30px;
 }
 
 .button-ripple:active {
   transform: scale(0.98);
-}
-
-.button-ripple:hover {
-  background-color: rgb(100, 124, 195);
-}
-
-/* Aplicar hover apenas em dispositivos que suportam hover (evita efeitos estranhos em touch) */
-@media (hover: none) {
-  .button-ripple:hover {
-    background-color: inherit;
-  }
 }
 
 .ripple_button {
@@ -43,6 +33,29 @@
   pointer-events: none;
   transform-origin: center center;
   opacity: 1;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .button-ripple:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    border: 1px solid var(--hover);
+    transform: scale(1.03);
+  }
+
+  .button-ripple:hover,
+  button {
+    color: var(--hover);
+  }
+
+  .button-ripple:hover {
+    background: var(--bg-menu);
+  }
+}
+
+@media (hover: none) {
+  .button-ripple:hover {
+    background-color: inherit;
+  }
 }
 
 @keyframes ripple-effect {
