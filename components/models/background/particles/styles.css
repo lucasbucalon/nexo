@@ -21,7 +21,7 @@
 
 .particle {
   position: absolute;
-  border-radius: 50%;
+  border-radius: 100%;
   background-color: var(--particles-color);
   opacity: var(--particles-opacity);
   filter: blur(var(--particles-blur));

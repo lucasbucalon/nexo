@@ -26,10 +26,6 @@ export const imageMap = {
 export const linkMap = {
   curriculo: {
     href: "/constant/pdf/Curriculo.pdf",
-    download: false,
-    type: "application/pdf",
-    title: "Currículo",
-    "aria-label": "Currículo em PDF",
   },
 };
 

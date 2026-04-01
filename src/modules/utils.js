@@ -81,17 +81,14 @@ function applyImages(root = document) {
     const newSrc = resolveImageSource(cfg);
     if (!newSrc) return;
 
-    // src (dark + responsivo via JS)
     if (img.getAttribute("src") !== newSrc) {
       img.setAttribute("src", newSrc);
     }
 
-    // srcset (responsividade nativa opcional)
     if (cfg.srcset) {
       img.srcset = cfg.srcset;
     }
 
-    // sizes (controle de layout)
     if (cfg.sizes) {
       img.sizes = cfg.sizes;
     }
@@ -99,7 +96,7 @@ function applyImages(root = document) {
 }
 
 // --------------------------------------------------
-// LINKS DINÂMICOS
+// LINKS DINÂMICOS (REFATORADO)
 // --------------------------------------------------
 
 function applyLinks(root = document) {
@@ -116,34 +113,26 @@ function applyLinks(root = document) {
       return;
     }
 
-    const href = String(cfg.href || "").trim();
+    const href = String(cfg.href).trim();
 
+    // Segurança
     if (!href || href.toLowerCase().startsWith("javascript:")) {
       console.warn(`[Assets] data-link="${name}" possui href inválido.`);
       return;
     }
 
+    // Obrigatório: lógica dinâmica
     link.href = href;
-    link.title = cfg.title ?? name;
 
-    if (cfg.target) link.target = cfg.target;
+    if (cfg.target) {
+      link.target = cfg.target;
+    }
 
     if (cfg.rel) {
       link.rel = cfg.rel;
-    } else if (cfg.target === "_blank") {
+    } else if (link.target === "_blank") {
       link.rel = "noopener noreferrer";
     }
-
-    if (link.target === "_blank") {
-      const existing = link.getAttribute("rel") || "";
-      const parts = new Set(existing.split(/\s+/).filter(Boolean));
-      parts.add("noopener");
-      parts.add("noreferrer");
-      link.setAttribute("rel", Array.from(parts).join(" "));
-    }
-
-    if (cfg.type) link.type = cfg.type;
-    if (cfg["aria-label"]) link.setAttribute("aria-label", cfg["aria-label"]);
 
     if (cfg.download) {
       link.setAttribute("download", cfg.download === true ? "" : cfg.download);
@@ -233,7 +222,6 @@ export function observeAssets(containerId = "route") {
 // --------------------------------------------------
 
 function setupReactiveUpdates() {
-  // Resize (mantido por causa do seu sistema)
   window.addEventListener(
     "resize",
     debounce(() => {
@@ -241,7 +229,6 @@ function setupReactiveUpdates() {
     }, 200),
   );
 
-  // Mudança de tema (dark mode)
   const themeObserver = new MutationObserver(() => {
     applyImages();
   });

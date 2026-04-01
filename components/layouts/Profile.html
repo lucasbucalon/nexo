@@ -28,8 +28,20 @@
 <html>
   <section class="profile">
     <div class="image">
-      <img data-image="arte" alt="Foto da arte" />
-      <img data-image="foto" alt="Foto do perfil" />
+      <img
+        data-image="arte"
+        alt="Foto da arte"
+        loading="eager"
+        fetchpriority="auto"
+        decoding="auto"
+      />
+      <img
+        data-image="foto"
+        alt="Foto do perfil"
+        loading="eager"
+        fetchpriority="high"
+        decoding="auto"
+      />
     </div>
 
     <h1 class="name">João Lucas Bucalon</h1>

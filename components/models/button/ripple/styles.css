@@ -11,7 +11,6 @@
   background-color: rgba(255, 255, 255, 0.03);
   border: 1px solid var(--bg-menu);
   border-radius: var(--box-radius);
-  outline: none;
   transition:
     background 0.3s,
     transform 0.1s;
