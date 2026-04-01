@@ -300,9 +300,9 @@ a,
 
   body::before {
     background: linear-gradient(
-      to top,
+      to bottom,
       var(--bg-gradient-start),
-      var(--bg-gradient-end) 80%
+      var(--bg-gradient-end) 100%
     );
   }
 }
