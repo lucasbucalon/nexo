@@ -20,7 +20,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
       const html = await response.text();
 
-      // atualiza meta tags (title, description, canonical, OG) a partir do fragmento carregado
       try {
         updateHeadFromHTML(html, pagePath);
       } catch (err) {
@@ -64,7 +63,6 @@ document.addEventListener("DOMContentLoaded", () => {
         } catch (e) {
           newScript.src = oldScript.src;
         }
-        // mantém async/defer conforme o atributo original
         if (oldScript.hasAttribute("async")) newScript.async = true;
         if (oldScript.hasAttribute("defer")) newScript.defer = true;
       } else {
@@ -117,7 +115,6 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     });
 
-    // canonical -> usa URL atual (inclui hash) para SPAs
     const canonical =
       doc.querySelector('link[rel="canonical"]')?.getAttribute("href") ||
       window.location.href;
@@ -133,13 +130,11 @@ document.addEventListener("DOMContentLoaded", () => {
   function resolveRoute() {
     let hash = window.location.hash;
 
-    // Se não houver hash → define página inicial
     if (!hash) {
       window.location.replace(`#${config.pageInit}`);
       return;
     }
 
-    // Ignora hashes que não são SPA (#footer por exemplo)
     if (!hash.startsWith("#/")) return;
 
     const path = hash.slice(1);
@@ -171,7 +166,7 @@ document.addEventListener("DOMContentLoaded", () => {
       if (window.location.hash !== href) {
         window.location.hash = href;
       } else {
-        resolveRoute(); // recarrega mesma rota
+        resolveRoute();
       }
 
       return;
@@ -192,7 +187,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const startY = window.scrollY;
       const targetY = target.getBoundingClientRect().top + window.scrollY;
       const distance = targetY - startY;
-      const duration = 700; // tempo da animação (ms)
+      const duration = 700;
 
       let startTime = null;
       let isScrolling = true;
@@ -235,9 +230,6 @@ document.addEventListener("DOMContentLoaded", () => {
   ========================================================= */
   window.addEventListener("hashchange", resolveRoute);
 
-  // Inicialização
-  // Espera sinal 'framework:ready' disparado por main.js para evitar race
-  // conditions onde assets/maps ainda não foram registrados.
   let resolved = false;
 
   function doResolve() {
@@ -255,7 +247,6 @@ document.addEventListener("DOMContentLoaded", () => {
     };
     document.addEventListener("framework:ready", onReady);
 
-    // Fallback para não travar indefinidamente
     setTimeout(() => {
       doResolve();
     }, 300);

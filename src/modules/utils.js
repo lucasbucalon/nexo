@@ -1,4 +1,3 @@
-// utils.js
 // --------------------------------------------------
 // IMPORTS
 // --------------------------------------------------
@@ -31,7 +30,6 @@ export function setAssetMaps(maps) {
 const getCurrentTheme = () => document.documentElement.dataset.theme || "light";
 const getViewportWidth = () => window.innerWidth;
 
-// Debounce para evitar spam em resize
 function debounce(fn, delay = 150) {
   let timeout;
   return (...args) => {
@@ -114,13 +112,11 @@ function applyLinks(root = document) {
 
     const href = String(cfg.href).trim();
 
-    // Segurança
     if (!href || href.toLowerCase().startsWith("javascript:")) {
       console.warn(`[Assets] data-link="${name}" possui href inválido.`);
       return;
     }
 
-    // Lógica dinâmica
     link.href = href;
 
     if (cfg.target) {
@@ -162,7 +158,6 @@ class IconElement extends HTMLElement {
     const src = typeof cfg === "string" ? cfg : cfg.src;
     if (!src) return;
 
-    // Apenas lógica JS: src dinâmico
     this.dataset.src = src;
     this.style.setProperty("--icon-url", `url("${src}")`);
   }

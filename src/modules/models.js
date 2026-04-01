@@ -15,8 +15,6 @@ window.loadConstants = async function (root = document) {
     }),
   );
   const components = [...classSet];
-  // Verifica existência de arquivos antes de inserir links/scripts para evitar
-  // 404s e erros MIME (server retornando HTML).
   const cssPromises = components.map(async (comp) => {
     const [category, name] = comp.split("-");
     if (!category || !name) return;
@@ -31,10 +29,7 @@ window.loadConstants = async function (root = document) {
         loadedCss.add(cssPath);
         return;
       }
-    } catch (err) {
-      // Se HEAD falhar (alguns servidores não permitem), tentamos anexar mesmo assim
-      // para manter compatibilidade.
-    }
+    } catch (err) {}
 
     const link = document.createElement("link");
     link.rel = "stylesheet";
@@ -68,9 +63,7 @@ window.loadConstants = async function (root = document) {
         loadedJs.add(jsPath);
         return;
       }
-    } catch (err) {
-      // fallback: tente carregar mesmo se HEAD falhar
-    }
+    } catch (err) {}
 
     await new Promise((resolve) => {
       const script = document.createElement("script");

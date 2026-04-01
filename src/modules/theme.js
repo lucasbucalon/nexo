@@ -38,10 +38,10 @@ function setupThemeEvents() {
     });
   }
 
-  // Reage se o usuário mudar o tema do sistema operacional
+ 
   const media = window.matchMedia("(prefers-color-scheme: dark)");
   media.addEventListener("change", (e) => {
-    // Só muda automaticamente se o usuário não tiver escolhido manualmente
+   
     if (!getSavedTheme()) {
       applyTheme(e.matches ? "dark" : "light");
     }

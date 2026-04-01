@@ -1,4 +1,3 @@
-// optimize.js
 import { config } from "../main.js";
 
 // ------------------------------
@@ -39,9 +38,7 @@ export async function loadCSS(href, { preload = false } = {}) {
       loadedAssets.css.add(hrefResolved);
       return;
     }
-  } catch (err) {
-    // HEAD pode falhar em alguns servidores; faremos fallback e tentaremos carregar o CSS.
-  }
+  } catch (err) {}
 
   return new Promise((resolve) => {
     let link;
@@ -87,9 +84,7 @@ export async function loadJS(src, module = true) {
       loadedAssets.js.add(srcResolved);
       return;
     }
-  } catch (err) {
-    // fallback: continue and try to load the script
-  }
+  } catch (err) {}
 
   return new Promise((resolve, reject) => {
     const script = document.createElement("script");

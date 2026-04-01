@@ -1,5 +1,3 @@
-// sheet.js
-
 // ------------------------------
 // Configurações internas padrão
 // ------------------------------
@@ -126,7 +124,7 @@ export async function applyFade(el, render, durationOverride) {
 }
 
 // ------------------------------
-// Smooth Scroll SPA (CORRIGIDO)
+// Smooth Scroll SPA
 // ------------------------------
 let smoothState = {
   initialized: false,
@@ -206,7 +204,6 @@ function initSmoothScroll(scrollCfg) {
 
   window.addEventListener("wheel", onWheel, { passive: false });
 
-  // 🔥 SINCRONIZA SE ALGUÉM USAR window.scrollTo DIRETAMENTE
   window.addEventListener("scroll", () => {
     if (!smoothState.running) {
       smoothState.current = window.scrollY;
@@ -214,7 +211,6 @@ function initSmoothScroll(scrollCfg) {
     }
   });
 
-  // 🔥 Método público para uso externo
   window.__sheetScrollTo = (y) => {
     smoothState.current = window.scrollY;
     goTo(y);
