@@ -17,7 +17,6 @@ html {
 }
 
 body {
-  margin: 0;
   text-align: center;
   font-size: 1.6rem;
   letter-spacing: 1px;
@@ -33,7 +32,6 @@ body {
 
   position: relative;
   color: var(--font-color);
-  background-color: var(--bg-gradient-start);
 }
 
 body::before {
@@ -236,4 +234,7 @@ ul {
 
 button {
   cursor: pointer;
+  overflow: hidden;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
 }

@@ -7,6 +7,16 @@
 
   --box-radius: 20px;
   --hover: #d06c2f;
+
+  --toggle-width: 68px;
+  --toggle-height: 34px;
+  --thumb-size: 30px;
+  --transition: 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+
+  --bg-light: #868e9d;
+  --bg-dark: #1f2937;
+  --thumb-light: #ffffff;
+  --thumb-dark: #111827;
 }
 
 [data-theme="dark"] {
