@@ -29,7 +29,6 @@ export function setAssetMaps(maps) {
 // --------------------------------------------------
 
 const getCurrentTheme = () => document.documentElement.dataset.theme || "light";
-
 const getViewportWidth = () => window.innerWidth;
 
 // Debounce para evitar spam em resize
@@ -42,7 +41,7 @@ function debounce(fn, delay = 150) {
 }
 
 // --------------------------------------------------
-// IMAGENS DINÂMICAS (OTIMIZADO)
+// IMAGENS DINÂMICAS
 // --------------------------------------------------
 
 function resolveImageSource(cfg) {
@@ -96,7 +95,7 @@ function applyImages(root = document) {
 }
 
 // --------------------------------------------------
-// LINKS DINÂMICOS (REFATORADO)
+// LINKS DINÂMICOS
 // --------------------------------------------------
 
 function applyLinks(root = document) {
@@ -121,7 +120,7 @@ function applyLinks(root = document) {
       return;
     }
 
-    // Obrigatório: lógica dinâmica
+    // Lógica dinâmica
     link.href = href;
 
     if (cfg.target) {
@@ -155,7 +154,6 @@ class IconElement extends HTMLElement {
     if (!name) return;
 
     const cfg = iconMap?.[name];
-
     if (!cfg) {
       console.warn(`[Assets] Ícone "${name}" não encontrado.`);
       return;
@@ -164,17 +162,12 @@ class IconElement extends HTMLElement {
     const src = typeof cfg === "string" ? cfg : cfg.src;
     if (!src) return;
 
+    // Apenas lógica JS: src dinâmico
+    this.dataset.src = src;
     this.style.setProperty("--icon-url", `url("${src}")`);
-
-    const width = this.getAttribute("width");
-    const height = this.getAttribute("height");
-
-    if (width) this.style.width = `${width}px`;
-    if (height) this.style.height = `${height}px`;
   }
 }
 
-// Evita redefinição
 if (!customElements.get("my-icon")) {
   customElements.define("my-icon", IconElement);
 }
@@ -255,7 +248,7 @@ export function initAssets() {
 }
 
 // --------------------------------------------------
-// TOOLTIPS (INALTERADO)
+// TOOLTIPS
 // --------------------------------------------------
 
 let tooltip = null;
@@ -293,9 +286,7 @@ function showTooltipFor(el) {
   tooltip.textContent = el.dataset.tooltip || "";
 
   let offset = getComputedStyle(el).getPropertyValue("--tooltip-offset").trim();
-
   if (!offset) offset = "10px";
-
   tooltip.style.setProperty("--tooltip-offset", offset);
 
   document.body.appendChild(tooltip);
@@ -346,7 +337,6 @@ document.addEventListener(
   "pointerdown",
   (e) => {
     if (e.pointerType !== "touch") return;
-
     const el = e.target.closest("[data-tooltip]");
     if (!el) return;
 
@@ -363,19 +353,13 @@ document.addEventListener(
 
 document.addEventListener("pointermove", (e) => {
   if (!longPressTimer || e.pointerId !== longPressPointerId) return;
-
   const dx = e.clientX - longPressStartPos.x;
   const dy = e.clientY - longPressStartPos.y;
-
-  if (Math.hypot(dx, dy) > MOVE_THRESHOLD) {
-    clearLongPress();
-  }
+  if (Math.hypot(dx, dy) > MOVE_THRESHOLD) clearLongPress();
 });
 
 document.addEventListener("pointerup", (e) => {
-  if (longPressTimer && e.pointerId === longPressPointerId) {
-    clearLongPress();
-  }
+  if (longPressTimer && e.pointerId === longPressPointerId) clearLongPress();
 });
 
 document.addEventListener("pointercancel", clearLongPress);

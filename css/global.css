@@ -6,22 +6,6 @@
   padding: 0;
 }
 
-:root {
-  --bg-gradient-start: rgb(47, 29, 127);
-  --bg-gradient-end: #424242;
-  --bg-menu: rgba(255, 255, 255, 0.1);
-
-  --font-color: #ffffff;
-
-  --box-radius: 20px;
-  --hover: #d06c2f;
-}
-
-[data-theme="dark"] {
-  --bg-gradient-start: rgb(21, 12, 63);
-  --bg-gradient-end: #1e1e1e;
-}
-
 html {
   font-size: 62.5%;
   font-family: consolas, monospace;
@@ -69,4 +53,187 @@ body::before {
   background-position: center;
 
   pointer-events: none;
+}
+
+/* --------------------------------------------------
+   TOOLTIP
+--------------------------------------------------*/
+
+.tooltip-global {
+  position: fixed;
+  background: black;
+  color: white;
+  padding: 6px 10px;
+  border-radius: 6px;
+  font-size: 12px;
+
+  pointer-events: none;
+  opacity: 0;
+
+  transform: translate(-50%, 10px);
+  transition:
+    opacity 0.2s ease,
+    transform 0.2s ease;
+
+  z-index: 9999;
+}
+
+.tooltip-global.show {
+  opacity: 1;
+  transform: translate(-50%, var(--tooltip-offset));
+}
+
+/* --------------------------------------------------
+   IMAGENS
+--------------------------------------------------*/
+
+img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+
+  user-select: none;
+  -webkit-user-drag: none;
+  -webkit-tap-highlight-color: transparent;
+
+  content-visibility: auto;
+  contain-intrinsic-size: 300px;
+
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+img[src] {
+  opacity: 1;
+}
+
+@media (max-width: 800px) {
+  img {
+    contain: content;
+  }
+}
+
+/* --------------------------------------------------
+   LINK
+-------------------------------------------------- */
+
+a {
+  color: inherit;
+  text-decoration: none;
+  cursor: pointer;
+
+  transition:
+    opacity 120ms ease,
+    text-decoration 120ms ease;
+
+  touch-action: manipulation;
+}
+
+a:active {
+  opacity: 0.7;
+}
+
+/* --------------------------------------------------
+   DATA-LINK
+-------------------------------------------------- */
+
+[data-link] {
+  cursor: pointer;
+  touch-action: manipulation;
+
+  transition:
+    opacity 120ms ease,
+    text-decoration 120ms ease;
+}
+
+[data-link]:active {
+  opacity: 0.7;
+}
+
+a[target="_blank"]::after,
+[data-link][target="_blank"]::after {
+  content: "↗";
+  font-size: 0.75em;
+  margin-left: 4px;
+  opacity: 0.6;
+}
+
+a[download]::after,
+[data-link][download]::after {
+  content: "⬇";
+  font-size: 0.75em;
+  margin-left: 4px;
+  opacity: 0.6;
+}
+
+a[href^="javascript:"],
+[data-link][href^="javascript:"] {
+  pointer-events: none;
+  opacity: 0.5;
+}
+
+a[aria-disabled="true"],
+[data-link][aria-disabled="true"] {
+  pointer-events: none;
+  opacity: 0.5;
+}
+
+/* --------------------------------------------------
+  <my-icon>  
+-------------------------------------------------- */
+my-icon {
+  display: inline-block;
+  align-items: center;
+  justify-content: center;
+  vertical-align: middle;
+  background-color: currentColor;
+  color: inherit;
+  width: 1em;
+  height: 1em;
+
+  -webkit-mask: var(--icon-url) no-repeat center / contain;
+  -webkit-mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  -webkit-mask-size: contain;
+
+  mask: var(--icon-url) no-repeat center / contain;
+  mask-repeat: no-repeat;
+  mask-position: center;
+  mask-size: contain;
+
+  transform-origin: center center;
+  transition:
+    color 0.2s ease-in-out,
+    transform 0.2s ease,
+    filter 0.2s ease,
+    opacity 0.2s ease;
+
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+
+  overflow: hidden;
+  text-indent: -9999px;
+
+  pointer-events: auto;
+}
+
+/* --------------------------------------------------
+   CUSTOM
+-------------------------------------------------- */
+
+hr {
+  margin: 70px 0;
+  border: none;
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+ul {
+  color: inherit;
+  text-decoration: none;
+  list-style: none;
+}
+
+button {
+  cursor: pointer;
 }
