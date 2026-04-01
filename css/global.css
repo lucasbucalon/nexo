@@ -9,6 +9,7 @@
 html {
   font-size: 62.5%;
   font-family: consolas, monospace;
+
   -webkit-text-size-adjust: 100%;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -17,12 +18,15 @@ html {
   min-height: 100%;
 
   scroll-behavior: smooth;
-  overflow-x: hidden;
-  overflow-y: auto;
   scroll-padding-top: var(--header-height, 70px);
+
+  overflow-x: hidden;
 
   touch-action: manipulation;
   -webkit-tap-highlight-color: transparent;
+
+  /* 🔥 garante fundo contínuo */
+  background: var(--bg-gradient-start);
 }
 
 body {
@@ -32,11 +36,10 @@ body {
   text-rendering: optimizeLegibility;
 
   width: 100%;
-  max-width: 100%;
-  min-height: 100svh;
   min-height: 100dvh;
 
-  overflow: hidden;
+  overflow-x: hidden;
+
   overscroll-behavior-x: contain;
 
   padding: 70px 5%;
@@ -47,13 +50,12 @@ body {
 
 body::before {
   content: "";
-  position: fixed;
+  position: absolute;
   inset: 0;
-  z-index: -9999;
+  z-index: -100;
 
   width: 100%;
-  max-width: 100%;
-  min-height: 100dvh;
+  min-height: 100%;
 
   background: linear-gradient(
     to right top,
