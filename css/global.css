@@ -36,7 +36,8 @@ body {
   min-height: 100dvh;
   min-height: 100vh;
 
-  /* overflow: hidden; */
+  overflow: hidden;
+  position: relative;
   overscroll-behavior-y: contain;
 
   padding: 70px 5%;
