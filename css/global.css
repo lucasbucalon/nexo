@@ -17,7 +17,6 @@ html {
   height: 100%;
 
   scroll-behavior: smooth;
-
   scroll-padding-top: var(--header-height, 70px);
 
   touch-action: manipulation;
@@ -37,11 +36,9 @@ body {
 
   overflow-y: auto;
   overflow-x: hidden;
-  /* overscroll-behavior-y: contain; */
+  overscroll-behavior-y: contain;
 
   padding: 70px 5%;
-  padding-top: env(safe-area-inset-top);
-  padding-bottom: env(safe-area-inset-bottom);
 
   position: relative;
   color: var(--font-color);
