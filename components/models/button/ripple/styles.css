@@ -16,10 +16,6 @@
   margin-top: 30px;
 }
 
-.button-ripple:active {
-  transform: scale(0.98);
-}
-
 .ripple_button {
   position: absolute;
   background: rgba(255, 255, 255, 0.5);
@@ -33,7 +29,7 @@
 
 @media (hover: hover) and (pointer: fine) {
   .button-ripple:hover {
-    background-color: rgba(255, 255, 255, 0.1);
+    background: var(--bg-menu);
     border: 1px solid var(--hover);
     transform: scale(1.03);
   }
@@ -41,10 +37,6 @@
   .button-ripple:hover,
   button {
     color: var(--hover);
-  }
-
-  .button-ripple:hover {
-    background: var(--bg-menu);
   }
 }
 
