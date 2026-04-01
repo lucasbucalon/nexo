@@ -8,7 +8,7 @@
   max-width: 400px;
   font-size: 1.8rem;
   color: white;
-  background-color: rgba(255, 255, 255, 0.05);
+  background-color: rgba(255, 255, 255, 0.03);
   border: 1px solid var(--bg-menu);
   border-radius: var(--box-radius);
   outline: none;

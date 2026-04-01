@@ -9,7 +9,7 @@
 :root {
   --bg-gradient-start: rgb(47, 29, 127);
   --bg-gradient-end: #424242;
-  --bg-menu: rgba(255, 255, 255, 0.2);
+  --bg-menu: rgba(255, 255, 255, 0.1);
 
   --font-color: #ffffff;
 
