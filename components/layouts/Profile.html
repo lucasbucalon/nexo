@@ -5,15 +5,19 @@
   }
 
   .image {
-    position: relative;
     display: flex;
     justify-content: center;
+    align-items: center;
   }
 
-  .art {
+  img[data-image="foto"] {
+    position: relative;
+  }
+
+  img[data-image="arte"] {
     position: absolute;
     z-index: -1;
-    margin: -50px 0 0 80px;
+    margin: 0 0 0 80px;
   }
 
   .name {
@@ -23,15 +27,11 @@
 
 <html>
   <section class="profile">
-    <! -- Foto do usuário -- >
     <div class="image">
-      <img class="art" data-image="arte" />
-      <img class="photo" data-image="foto" />
+      <img data-image="arte" alt="Foto da arte" />
+      <img data-image="foto" alt="Foto do perfil" />
     </div>
-    <! -- Foto do usuário -- >
 
-    <! -- Nome do usuário -- >
     <h1 class="name">João Lucas Bucalon</h1>
-    <! -- Nome do usuário -- >
   </section>
 </html>

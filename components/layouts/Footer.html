@@ -3,7 +3,7 @@
     display: none;
   }
 
-  #footer em {
+  #footer i {
     padding: 70px 0;
     display: block;
     text-decoration: underline;
@@ -11,11 +11,11 @@
   }
 
   #footer .icons {
-    display: flex;
-    justify-content: space-around;
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
   }
 
-  #footer a {
+  #footer .icons a {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -23,29 +23,15 @@
     border-radius: var(--box-radius);
     padding: 10px;
     transition: all 0.3s ease-in-out;
+    width: 50px;
+    margin: 0 auto;
   }
 
-  .icon_footer {
+  #footer my-icon {
     width: 2.7rem;
     height: 2.7rem;
     color: white;
   }
-
-  /* @media (hover: hover) and (pointer: fine) { */
-  #footer a:hover {
-    transform: scale(1.08);
-  }
-
-  #footer a:hover .icon_footer {
-    color: var(--hover);
-    transform: scale(1.07);
-    filter: contrast(1.05) saturate(1.05);
-  }
-
-  #footer a:hover p {
-    color: var(--hover);
-  }
-  /* } */
 
   .return {
     width: 100%;
@@ -57,22 +43,32 @@
     left: 0;
   }
 
-  .logo {
-    width: 2.5rem;
-    height: 2.5rem;
-    margin: 0 5px 0 0;
+  .return a {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--bg-menu);
+    border-radius: var(--box-radius);
+    padding: 10px;
+    transition: all 0.3s ease-in-out;
   }
 
-  #footer a {
+  img[data-image="logo"] {
+    width: 2.5rem;
+    height: 2.5rem;
+    margin: 0 5px;
+  }
+
+  #footer a[data-tooltip] {
     --tooltip-offset: -35px;
   }
 
-  @media (max-width: 800px) {
+  /* @media (max-width: 800px) {
     #footer a:hover {
       transform: scale(1);
     }
 
-    #footer a:hover .icon_footer {
+    #footer a:hover my-icon {
       color: white;
       transform: scale(1);
       filter: contrast(1) saturate(1);
@@ -81,21 +77,14 @@
     #footer a:hover p {
       color: white;
     }
-  }
+  } */
 
   @media (max-width: 500px) {
     #footer .icons {
-      display: grid;
       grid-template-columns: repeat(4, 1fr);
       gap: 30px 0px;
-      margin: 0 auto;
     }
 
-    #footer .icons a {
-      padding: 10px;
-      width: 50px;
-      margin: 0 auto;
-    }
     br {
       display: block;
     }
@@ -105,7 +94,7 @@
       gap: 15px;
     }
 
-    .logo_box {
+    a[data-tooltip="Saber mais"] {
       width: 80%;
     }
   }
@@ -114,37 +103,36 @@
 <section id="footer">
   <div class="icons">
     <a href="/#" data-tooltip="Facebook"
-      ><my-icon data-icon="facebook" class="icon_footer"></my-icon
+      ><my-icon data-icon="facebook"></my-icon
     ></a>
     <a href="/#" data-tooltip="Instagram"
-      ><my-icon data-icon="instagram" class="icon_footer"></my-icon
+      ><my-icon data-icon="instagram"></my-icon
     ></a>
     <a href="/#" data-tooltip="TikTok"
-      ><my-icon data-icon="tiktok" class="icon_footer"></my-icon
+      ><my-icon data-icon="tiktok"></my-icon
     ></a>
     <a href="/#" data-tooltip="WhatsApp"
-      ><my-icon data-icon="whatsapp" class="icon_footer"></my-icon
+      ><my-icon data-icon="whatsapp"></my-icon
     ></a>
     <a href="/#" data-tooltip="LinkedIn"
-      ><my-icon data-icon="linkedin" class="icon_footer"></my-icon
+      ><my-icon data-icon="linkedin"></my-icon
     ></a>
     <a href="/#" data-tooltip="GitHub"
-      ><my-icon data-icon="github" class="icon_footer"></my-icon
+      ><my-icon data-icon="github"></my-icon
     ></a>
-    <a href="/#" data-tooltip="Email"
-      ><my-icon data-icon="email" class="icon_footer"></my-icon
-    ></a>
+    <a href="/#" data-tooltip="Email"><my-icon data-icon="email"></my-icon></a>
     <a href="/#" data-tooltip="Currículo"
-      ><my-icon data-icon="doc" class="icon_footer"></my-icon
+      ><my-icon data-icon="doc"></my-icon
     ></a>
   </div>
 
-  <em>© 2022 Lucas Bucalon <br />- Todos os direitos reservados.</em>
+  <i btn>© 2022 Lucas Bucalon <br />- Todos os direitos reservados.</i>
 
   <div class="return">
-    <a href="#/home" data-tooltip="Saber mais" class="logo_box">
-      <img data-image="logo" class="logo" />
-      <p>Criado pela Nexo</p></a
+    <a href="/#" data-tooltip="Saber mais">
+      <p>Criado pela</p>
+      <img data-image="logo" alt="Logo da Nexo" />
+      <b>Nexo</b></a
     >
     <a href="#header" move data-tooltip="Subir"
       ><my-icon data-icon="header" class="icon_footer"></my-icon

@@ -7,12 +7,16 @@ let imageMap = {};
 let linkMap = {};
 let iconMap = {};
 
+// --------------------------------------------------
+// SETUP DOS MAPAS
+// --------------------------------------------------
+
 export function setAssetMaps(maps) {
   imageMap = maps.imageMap || {};
   linkMap = maps.linkMap || {};
   iconMap = maps.iconMap || {};
 
-  // Força re-render dos ícones já existentes
+  // Re-render ícones existentes
   document.querySelectorAll("my-icon[data-icon]").forEach((icon) => {
     if (typeof icon.render === "function") {
       icon.render();
@@ -38,7 +42,7 @@ function debounce(fn, delay = 150) {
 }
 
 // --------------------------------------------------
-// IMAGENS DINÂMICAS
+// IMAGENS DINÂMICAS (OTIMIZADO)
 // --------------------------------------------------
 
 function resolveImageSource(cfg) {
@@ -75,30 +79,21 @@ function applyImages(root = document) {
     }
 
     const newSrc = resolveImageSource(cfg);
-
     if (!newSrc) return;
 
+    // src (dark + responsivo via JS)
     if (img.getAttribute("src") !== newSrc) {
       img.setAttribute("src", newSrc);
     }
 
-    img.alt = cfg.alt ?? name;
-    img.title = cfg.title ?? name;
-    img.decoding = "async";
-    // loading: use eager for prioritized images (fetchpriority or explicit priority)
-    const isPriorityImage =
-      Boolean(cfg.fetchpriority) ||
-      (typeof cfg.priority === "string" &&
-        ["high", "eager", "critical"].includes(cfg.priority.toLowerCase()));
+    // srcset (responsividade nativa opcional)
+    if (cfg.srcset) {
+      img.srcset = cfg.srcset;
+    }
 
-    img.loading = isPriorityImage ? "eager" : cfg.loading || "lazy";
-
-    if (cfg.fetchpriority) {
-      try {
-        img.fetchPriority = cfg.fetchpriority;
-      } catch (e) {
-        // alguns navegadores podem não suportar fetchPriority
-      }
+    // sizes (controle de layout)
+    if (cfg.sizes) {
+      img.sizes = cfg.sizes;
     }
   });
 }
@@ -121,8 +116,8 @@ function applyLinks(root = document) {
       return;
     }
 
-    // valida href para evitar javascript: e outros protocolos perigosos
     const href = String(cfg.href || "").trim();
+
     if (!href || href.toLowerCase().startsWith("javascript:")) {
       console.warn(`[Assets] data-link="${name}" possui href inválido.`);
       return;
@@ -132,9 +127,13 @@ function applyLinks(root = document) {
     link.title = cfg.title ?? name;
 
     if (cfg.target) link.target = cfg.target;
-    if (cfg.rel) link.rel = cfg.rel;
-    else if (cfg.target === "_blank") link.rel = "noopener noreferrer";
-    // garantia extra: sempre remove referencias window-opener se target=_blank
+
+    if (cfg.rel) {
+      link.rel = cfg.rel;
+    } else if (cfg.target === "_blank") {
+      link.rel = "noopener noreferrer";
+    }
+
     if (link.target === "_blank") {
       const existing = link.getAttribute("rel") || "";
       const parts = new Set(existing.split(/\s+/).filter(Boolean));
@@ -146,8 +145,9 @@ function applyLinks(root = document) {
     if (cfg.type) link.type = cfg.type;
     if (cfg["aria-label"]) link.setAttribute("aria-label", cfg["aria-label"]);
 
-    if (cfg.download)
+    if (cfg.download) {
       link.setAttribute("download", cfg.download === true ? "" : cfg.download);
+    }
   });
 }
 
@@ -157,7 +157,6 @@ function applyLinks(root = document) {
 
 class IconElement extends HTMLElement {
   connectedCallback() {
-    // Só renderiza se os mapas já foram injetados
     if (!iconMap || Object.keys(iconMap).length === 0) return;
     this.render();
   }
@@ -186,7 +185,7 @@ class IconElement extends HTMLElement {
   }
 }
 
-// Evita erro de redefinição
+// Evita redefinição
 if (!customElements.get("my-icon")) {
   customElements.define("my-icon", IconElement);
 }
@@ -234,7 +233,7 @@ export function observeAssets(containerId = "route") {
 // --------------------------------------------------
 
 function setupReactiveUpdates() {
-  // Resize com debounce
+  // Resize (mantido por causa do seu sistema)
   window.addEventListener(
     "resize",
     debounce(() => {
@@ -242,7 +241,7 @@ function setupReactiveUpdates() {
     }, 200),
   );
 
-  // Mudança de tema
+  // Mudança de tema (dark mode)
   const themeObserver = new MutationObserver(() => {
     applyImages();
   });
@@ -269,7 +268,7 @@ export function initAssets() {
 }
 
 // --------------------------------------------------
-// TOOLTIPS (TOUCH-FRIENDLY)
+// TOOLTIPS (INALTERADO)
 // --------------------------------------------------
 
 let tooltip = null;
@@ -277,8 +276,9 @@ let currentEl = null;
 let longPressTimer = null;
 let longPressPointerId = null;
 let longPressStartPos = null;
+
 const LONG_PRESS_MS = 450;
-const MOVE_THRESHOLD = 10; // px
+const MOVE_THRESHOLD = 10;
 
 function clearLongPress() {
   if (longPressTimer) {
@@ -306,7 +306,9 @@ function showTooltipFor(el) {
   tooltip.textContent = el.dataset.tooltip || "";
 
   let offset = getComputedStyle(el).getPropertyValue("--tooltip-offset").trim();
+
   if (!offset) offset = "10px";
+
   tooltip.style.setProperty("--tooltip-offset", offset);
 
   document.body.appendChild(tooltip);
@@ -317,23 +319,18 @@ function showTooltipFor(el) {
 
   requestAnimationFrame(() => {
     if (!tooltip) return;
-    try {
-      tooltip.classList.add("show");
-    } catch (err) {
-      console.warn("[Tooltip] Falha ao aplicar classe 'show':", err);
-    }
+    tooltip.classList.add("show");
   });
 
   currentEl = el;
 
-  // fecha o tooltip ao tocar fora
   const onDocPointerDown = (ev) => {
     if (
       ev.target.closest &&
       (ev.target.closest("[data-tooltip]") === el ||
         ev.target.closest(".tooltip-global") === tooltip)
     ) {
-      return; // tocou no próprio alvo ou tooltip
+      return;
     }
     hideTooltip();
     document.removeEventListener("pointerdown", onDocPointerDown, true);
@@ -342,7 +339,7 @@ function showTooltipFor(el) {
   document.addEventListener("pointerdown", onDocPointerDown, true);
 }
 
-// Mouse/pen: exibe normalmente ao passar o ponteiro
+// Mouse
 document.addEventListener("pointerover", (e) => {
   if (e.pointerType === "touch") return;
   const el = e.target.closest("[data-tooltip]");
@@ -357,11 +354,12 @@ document.addEventListener("pointerout", (e) => {
   hideTooltip();
 });
 
-// Touch: long-press para exibir tooltip (não atrapalha scroll)
+// Touch
 document.addEventListener(
   "pointerdown",
   (e) => {
     if (e.pointerType !== "touch") return;
+
     const el = e.target.closest("[data-tooltip]");
     if (!el) return;
 
@@ -370,9 +368,7 @@ document.addEventListener(
 
     longPressTimer = setTimeout(() => {
       showTooltipFor(el);
-      longPressTimer = null;
-      longPressPointerId = null;
-      longPressStartPos = null;
+      clearLongPress();
     }, LONG_PRESS_MS);
   },
   { passive: true },
@@ -380,17 +376,22 @@ document.addEventListener(
 
 document.addEventListener("pointermove", (e) => {
   if (!longPressTimer || e.pointerId !== longPressPointerId) return;
+
   const dx = e.clientX - longPressStartPos.x;
   const dy = e.clientY - longPressStartPos.y;
-  if (Math.hypot(dx, dy) > MOVE_THRESHOLD) clearLongPress();
+
+  if (Math.hypot(dx, dy) > MOVE_THRESHOLD) {
+    clearLongPress();
+  }
 });
 
 document.addEventListener("pointerup", (e) => {
-  if (longPressTimer && e.pointerId === longPressPointerId) clearLongPress();
+  if (longPressTimer && e.pointerId === longPressPointerId) {
+    clearLongPress();
+  }
 });
 
 document.addEventListener("pointercancel", clearLongPress);
 
-// Esconde tooltip ao rolar ou redimensionar
-window.addEventListener("scroll", () => hideTooltip());
-window.addEventListener("resize", () => hideTooltip());
+window.addEventListener("scroll", hideTooltip);
+window.addEventListener("resize", hideTooltip);

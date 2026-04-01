@@ -2,9 +2,6 @@
 export const imageMap = {
   foto: {
     src: "/constant/images/foto_perfil.png",
-    alt: "imagem do perfil",
-    title: "Lucas Bucalon",
-    fetchpriority: "low",
     dark: "/constant/images/foto_perfil.png",
     set: {
       src: "/constant/images/foto_perfil.png",
@@ -14,9 +11,6 @@ export const imageMap = {
   },
   arte: {
     src: "/constant/images/arte_perfil.png",
-    alt: "arte do perfil",
-    title: "Lucas Bucalon",
-    fetchpriority: "low",
     dark: "/constant/images/arte_perfil.png",
     set: {
       src: "/constant/images/arte_perfil.png",
@@ -26,8 +20,6 @@ export const imageMap = {
   },
   logo: {
     src: "/constant/images/logo.png",
-    alt: "logo",
-    title: "logo",
   },
 };
 
