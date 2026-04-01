@@ -283,6 +283,9 @@ a,
 [role="button"] {
   -webkit-tap-highlight-color: transparent;
   touch-action: manipulation;
+  user-select: none;
+  will-change: transform;
+  transform: translateZ(0);
 }
 
 /* --------------------------------------------------
