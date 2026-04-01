@@ -18,7 +18,6 @@ html {
 
   scroll-behavior: smooth;
 
-  overflow-y: auto;
   scroll-padding-top: var(--header-height, 70px);
 
   touch-action: manipulation;
@@ -36,8 +35,9 @@ body {
   min-height: 100dvh;
   min-height: 100vh;
 
-  /* overflow-x: hidden; */
-  overscroll-behavior-y: contain;
+  overflow-y: auto;
+  overflow-x: hidden;
+  /* overscroll-behavior-y: contain; */
 
   padding: 70px 5%;
   padding-top: env(safe-area-inset-top);
