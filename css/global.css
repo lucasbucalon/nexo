@@ -40,7 +40,7 @@ body {
 
   overflow-x: hidden;
 
-  overscroll-behavior-x: contain;
+  /* overscroll-behavior-x: contain; */
 
   padding: 70px 5%;
 
