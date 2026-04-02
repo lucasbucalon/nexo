@@ -1,0 +1,5 @@
+/* Placeholder styles for tooltip-global (main styles live in css/global.css) */
+.tooltip-global {
+  position: absolute;
+  z-index: 9999;
+}

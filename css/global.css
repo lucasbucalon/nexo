@@ -4,6 +4,7 @@
   box-sizing: border-box;
   margin: 0;
   padding: 0;
+  outline: none;
 }
 
 html {
@@ -38,6 +39,7 @@ body {
   min-height: 100dvh;
 
   overflow-x: hidden;
+  overscroll-behavior-x: contain;
 
   padding: 70px 5%;
 
@@ -212,7 +214,6 @@ select {
   font: inherit;
   color: inherit;
   border: none;
-  outline: none;
   background: none;
 }
 

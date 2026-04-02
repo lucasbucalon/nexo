@@ -3,7 +3,6 @@
 .effect-ripple {
   position: relative;
   overflow: hidden;
-  outline: none;
   transition:
     background 0.3s,
     transform 0.1s;
