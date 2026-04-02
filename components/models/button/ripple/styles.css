@@ -18,7 +18,7 @@
 
 .ripple_button {
   position: absolute;
-  background: rgba(255, 255, 255, 0.5);
+  background-color: rgba(255, 255, 255, 0.5);
   border-radius: 100%;
   transform: scale(0);
   animation: ripple-effect 4s ease-out forwards;
@@ -29,7 +29,7 @@
 
 @media (hover: hover) and (pointer: fine) {
   .button-ripple:hover {
-    background: var(--bg-menu);
+    background-color: var(--bg-menu);
     border: 1px solid var(--hover);
     transform: scale(1.03);
   }
