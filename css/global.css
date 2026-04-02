@@ -40,7 +40,6 @@ body {
 
   overflow-x: hidden;
 
-  /* overscroll-behavior-x: contain; */
 
   padding: 70px 5%;
 
@@ -108,7 +107,7 @@ img {
   user-select: none;
   -webkit-user-drag: none;
   -webkit-tap-highlight-color: transparent;
-
+ 
   contain-intrinsic-size: 300px;
 
   opacity: 0;
@@ -132,8 +131,6 @@ img[src] {
 [data-link] {
   cursor: pointer;
 
-  transition:
-    /* opacity 120ms ease, */ text-decoration 120ms ease;
 }
 
 a[target="_blank"]::after,
@@ -141,7 +138,7 @@ a[target="_blank"]::after,
   content: "↗";
   font-size: 0.75em;
   margin-left: 4px;
-  /* opacity: 0.6; */
+
 }
 
 a[download]::after,
@@ -149,19 +146,19 @@ a[download]::after,
   content: "⬇";
   font-size: 0.75em;
   margin-left: 4px;
-  /* opacity: 0.6; */
+
 }
 
 a[href^="javascript:"],
 [data-link][href^="javascript:"] {
   pointer-events: none;
-  /* opacity: 0.5; */
+ 
 }
 
 a[aria-disabled="true"],
 [data-link][aria-disabled="true"] {
   pointer-events: none;
-  /* opacity: 0.5; */
+ 
 }
 
 /* --------------------------------------------------
@@ -198,8 +195,10 @@ my-icon {
   background-repeat: no-repeat;
   background-position: center;
 
+  overflow: hidden;
   text-indent: -9999px;
 
+ 
 }
 
 /* --------------------------------------------------
@@ -231,6 +230,7 @@ input[type="button"],
 input[type="submit"] {
   cursor: pointer;
   background: none;
+  overflow: hidden;
 }
 
 input,
@@ -242,7 +242,6 @@ select {
 
 a {
   transition:
-    /* opacity 120ms ease, */ text-decoration 120ms ease;
 
   cursor: pointer;
   text-decoration: none;
@@ -263,7 +262,8 @@ button,
 a,
 [role="button"] {
   -webkit-tap-highlight-color: transparent;
-  user-select: none;
+  
+  
 }
 
 /* --------------------------------------------------
