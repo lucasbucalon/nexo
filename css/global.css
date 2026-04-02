@@ -52,7 +52,7 @@ body::before {
   content: "";
   position: absolute;
   inset: 0;
-  /* z-index: -100; */
+  z-index: -100;
 
   width: 100%;
   min-height: 100%;
@@ -109,7 +109,6 @@ img {
   -webkit-user-drag: none;
   -webkit-tap-highlight-color: transparent;
 
-  content-visibility: auto;
   contain-intrinsic-size: 300px;
 
   opacity: 0;
@@ -132,11 +131,9 @@ img[src] {
 
 [data-link] {
   cursor: pointer;
-  touch-action: manipulation;
 
   transition:
-    /* opacity 120ms ease, */
-    text-decoration 120ms ease;
+    /* opacity 120ms ease, */ text-decoration 120ms ease;
 }
 
 a[target="_blank"]::after,
@@ -201,10 +198,8 @@ my-icon {
   background-repeat: no-repeat;
   background-position: center;
 
-  overflow: hidden;
   text-indent: -9999px;
 
-  pointer-events: auto;
 }
 
 /* --------------------------------------------------
@@ -228,15 +223,14 @@ select {
   color: inherit;
   border: none;
   outline: none;
-  /* background: none; */
+  background: none;
 }
 
 button,
 input[type="button"],
 input[type="submit"] {
   cursor: pointer;
-  /* background: none; */
-  overflow: hidden;
+  background: none;
 }
 
 input,
@@ -248,8 +242,7 @@ select {
 
 a {
   transition:
-    /* opacity 120ms ease, */
-    text-decoration 120ms ease;
+    /* opacity 120ms ease, */ text-decoration 120ms ease;
 
   cursor: pointer;
   text-decoration: none;
@@ -270,10 +263,7 @@ button,
 a,
 [role="button"] {
   -webkit-tap-highlight-color: transparent;
-  touch-action: manipulation;
   user-select: none;
-  will-change: transform;
-  transform: translateZ(0);
 }
 
 /* --------------------------------------------------
