@@ -135,7 +135,7 @@ img[src] {
   touch-action: manipulation;
 
   transition:
-    opacity 120ms ease,
+    /* opacity 120ms ease, */
     text-decoration 120ms ease;
 }
 
@@ -144,7 +144,7 @@ a[target="_blank"]::after,
   content: "↗";
   font-size: 0.75em;
   margin-left: 4px;
-  opacity: 0.6;
+  /* opacity: 0.6; */
 }
 
 a[download]::after,
@@ -152,19 +152,19 @@ a[download]::after,
   content: "⬇";
   font-size: 0.75em;
   margin-left: 4px;
-  opacity: 0.6;
+  /* opacity: 0.6; */
 }
 
 a[href^="javascript:"],
 [data-link][href^="javascript:"] {
   pointer-events: none;
-  opacity: 0.5;
+  /* opacity: 0.5; */
 }
 
 a[aria-disabled="true"],
 [data-link][aria-disabled="true"] {
   pointer-events: none;
-  opacity: 0.5;
+  /* opacity: 0.5; */
 }
 
 /* --------------------------------------------------
@@ -248,7 +248,7 @@ select {
 
 a {
   transition:
-    opacity 120ms ease,
+    /* opacity 120ms ease, */
     text-decoration 120ms ease;
 
   cursor: pointer;
