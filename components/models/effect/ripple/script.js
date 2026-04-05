@@ -15,33 +15,16 @@ window.Components["effect-ripple"] = {
 
         const ripple = document.createElement("span");
         ripple.classList.add("ripple_effect");
-
-        // tamanho real
         ripple.style.width = ripple.style.height = `${radius * 2}px`;
         ripple.style.left = `${clientX - rect.left - radius}px`;
         ripple.style.top = `${clientY - rect.top - radius}px`;
 
-        // 🔥 velocidade constante (px/ms)
-        const SPEED = 1; // ajuste fino aqui (quanto maior, mais rápido)
-        const duration = radius / SPEED;
-
-        ripple.style.setProperty("--ripple-duration", `${duration}ms`);
-
+        effect.querySelectorAll(".ripple_effect").forEach((r) => r.remove());
         effect.appendChild(ripple);
 
-        // força reflow para iniciar animação corretamente
-        ripple.offsetHeight;
-
-        ripple.classList.add("ripple-animate");
-
         function removeRipple() {
-          ripple.classList.add("ripple-fade");
-
-          // remove só depois da animação terminar
-          const fadeDuration = 600; // igual ao CSS
-          setTimeout(() => {
-            ripple.remove();
-          }, fadeDuration);
+          ripple.classList.add("fade-out");
+          setTimeout(() => ripple.remove(), 300);
         }
 
         effect.addEventListener("mouseup", removeRipple, { once: true });

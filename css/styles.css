@@ -7,7 +7,7 @@
   --bg-tip: white;
 
   --particles-blur: 2px;
-  --ripple: rgba(0, 0, 0, 0.05);
+  --ripple: rgba(0, 0, 0, 0.3);
 
   --font-color: #000000;
   --hover: rgb(40, 0, 216);
@@ -29,7 +29,7 @@
   --bg-tip: black;
 
   --particles-blur: 0px;
-  --ripple: rgba(255, 255, 255, 0.1);
+  --ripple: rgba(255, 255, 255, 0.4);
 
   --font-color: #ffffff;
   --hover: #d06c2f;
