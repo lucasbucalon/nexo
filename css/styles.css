@@ -1,27 +1,41 @@
 :root {
-  --bg-gradient-start: rgb(47, 29, 127);
-  --bg-gradient-end: #424242;
-  --bg-menu: rgba(255, 255, 255, 0.1);
+  --bg-gradient-end: #6e6b69;
+  --bg-gradient-start: #d06c2f;
+  --bg-menu: rgb(223, 223, 223);
+  --bg-btn: rgb(223, 223, 223);
+  --bg-image: rgba(0, 0, 0, 0.2);
+  --bg-tip: white;
 
-  --font-color: #ffffff;
+  --particles-blur: 2px;
+  --ripple: rgba(0, 0, 0, 0.05);
+
+  --font-color: #000000;
+  --hover: rgb(40, 0, 216);
+  --box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+
+  --track-bg: #868e9d;
+  --thumb-bg: #ffffff;
+  --color-theme: #000000;
 
   --box-radius: 20px;
-  --hover: #d06c2f;
-
-  --toggle-width: 68px;
-  --toggle-height: 34px;
-  --thumb-size: 30px;
-  --transition: 0.35s cubic-bezier(0.4, 0, 0.2, 1);
-
-  --bg-light: #868e9d;
-  --bg-dark: #1f2937;
-  --thumb-light: #ffffff;
-  --thumb-dark: #111827;
-
-  --box-shadow: 0 0 10px rgba(255, 255, 255, 0.05);
 }
 
 [data-theme="dark"] {
   --bg-gradient-start: rgb(21, 12, 63);
   --bg-gradient-end: #1e1e1e;
+  --bg-menu: rgba(255, 255, 255, 0.1);
+  --bg-btn: rgba(255, 255, 255, 0.03);
+  --bg-image: rgba(255, 255, 255, 0.05);
+  --bg-tip: black;
+
+  --particles-blur: 0px;
+  --ripple: rgba(255, 255, 255, 0.1);
+
+  --font-color: #ffffff;
+  --hover: #d06c2f;
+  --box-shadow: 0 0 5px rgba(255, 255, 255, 0.05);
+
+  --track-bg: #1f2937;
+  --thumb-bg: #111827;
+  --color-theme: #ffffff;
 }

@@ -1,32 +1,42 @@
-/* Botão com Efeito Ripple */
+/* ------------------ RIPPLE BASE ------------------ */
 
 .effect-ripple {
   position: relative;
   overflow: hidden;
   transition:
-    background 0.3s,
+    background 0.5s,
     transform 0.1s;
   -webkit-tap-highlight-color: transparent;
   touch-action: manipulation;
 }
 
+/* ------------------ RIPPLE ------------------ */
+
 .ripple_effect {
   position: absolute;
-  background: rgba(255, 255, 255, 0.5);
+  background: var(--ripple);
   border-radius: 100%;
-  transform: scale(0);
-  animation: ripple-effect 5s ease-out forwards;
   pointer-events: none;
-  transform-origin: center center;
+
+  transform: scale(0);
   opacity: 1;
+
+  will-change: transform, opacity;
 }
 
-@keyframes ripple-effect {
+/* animação controlada via JS (dinâmica) */
+.ripple-animate {
+  animation: ripple-scale var(--ripple-duration) linear forwards;
+}
+
+@keyframes ripple-scale {
   to {
-    transform: scale(4);
+    transform: scale(1);
   }
 }
-.fade-out {
-  transition: opacity 0.5s ease-out;
+
+/* fade real */
+.ripple-fade {
   opacity: 0;
+  transition: opacity 0.8s ease-out;
 }

@@ -21,11 +21,8 @@ window.Components["background-particles"] = (function () {
     const sizeMin = parseNumber(s.getPropertyValue("--particle-size-min"), 1);
     const sizeMax = parseNumber(s.getPropertyValue("--particle-size-max"), 4);
     const speed = parseNumber(s.getPropertyValue("--particles-speed"), 1);
-    const opacity = parseNumber(s.getPropertyValue("--particles-opacity"), 1);
-    const color = (s.getPropertyValue("--particles-color") || "#ffffff").trim();
-    const blur = (s.getPropertyValue("--particles-blur") || "0px").trim();
 
-    return { count, sizeMin, sizeMax, speed, opacity, color, blur };
+    return { count, sizeMin, sizeMax, speed };
   }
 
   function updateSize() {
@@ -42,9 +39,6 @@ window.Components["background-particles"] = (function () {
     const el = document.createElement("div");
     el.className = "particle";
     el.style.width = el.style.height = `${size}px`;
-    el.style.backgroundColor = config.color;
-    el.style.opacity = String(config.opacity);
-    el.style.filter = `blur(${config.blur})`;
 
     const x = Math.random() * Math.max(0, width - size);
     const y = Math.random() * Math.max(0, height - size);

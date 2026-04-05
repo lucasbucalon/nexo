@@ -1,11 +1,11 @@
 .background-particles {
+  opacity: 1;
+  filter: blur(var(--particles-blur));
+  --particles-color: #ffffff;
+  --particles-speed: 2;
   --particles-count: 40;
   --particle-size-min: 1px;
   --particle-size-max: 4px;
-  --particles-color: #ffffff;
-  --particles-speed: 2;
-  --particles-opacity: 0.9;
-  --particles-blur: 0px;
 
   position: fixed;
   inset: 0;
@@ -23,8 +23,6 @@
   position: absolute;
   border-radius: 100%;
   background-color: var(--particles-color);
-  opacity: var(--particles-opacity);
-  filter: blur(var(--particles-blur));
   will-change: transform, opacity;
   transform: translate3d(0, 0, 0);
   pointer-events: none;

@@ -9,7 +9,13 @@
 
 html {
   font-size: 62.5%;
-  font-family: consolas, monospace;
+  font-family:
+    consolas,
+    system-ui,
+    -apple-system,
+    Arial,
+    sans-serif,
+    monospace;
 
   -webkit-text-size-adjust: 100%;
   -webkit-font-smoothing: antialiased;
@@ -57,9 +63,9 @@ body::before {
   min-height: 100%;
 
   background: linear-gradient(
-    to right top,
+    to bottom,
     var(--bg-gradient-start),
-    var(--bg-gradient-end) 100%
+    var(--bg-gradient-end) 150%
   );
 
   background-size: cover;
@@ -75,11 +81,10 @@ body::before {
 
 .tooltip-global {
   position: fixed;
-  background: black;
-  color: white;
+  background: var(--bg-tip);
   padding: 6px 10px;
   border-radius: 6px;
-  font-size: 12px;
+  font-size: 1.2rem;
 
   pointer-events: none;
   opacity: 0;
@@ -116,12 +121,6 @@ img {
 
 img[src] {
   opacity: 1;
-}
-
-@media (max-width: 800px) {
-  img {
-    contain: content;
-  }
 }
 
 /* --------------------------------------------------
@@ -274,18 +273,13 @@ a,
     padding: 70px 3%;
   }
 
-  body::before {
-    background: linear-gradient(
-      to bottom,
-      var(--bg-gradient-start),
-      var(--bg-gradient-end) 100%
-    );
+  img {
+    contain: content;
   }
 }
 
 @media (hover: none) {
   .tooltip-global {
-    font-size: 1.4rem;
     transform: translate(-50%, calc(var(--tooltip-offset) + 6px));
     pointer-events: auto;
   }

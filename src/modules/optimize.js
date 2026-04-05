@@ -175,3 +175,70 @@ document.addEventListener("DOMContentLoaded", () => {
 document.addEventListener("spa:pageLoaded", () => {
   initLazyLoad();
 });
+
+(function () {
+  const IGNORED = [
+    "A listener indicated an asynchronous response",
+    "chrome-extension",
+  ];
+
+  function shouldIgnore(msg) {
+    if (!msg) return false;
+    try {
+      msg = String(msg);
+    } catch (e) {}
+    return IGNORED.some((p) => msg.includes(p));
+  }
+
+  function onAny(e) {
+    const msg = e.message || (e.reason && e.reason.message) || e.reason || "";
+    if (shouldIgnore(msg)) {
+      try {
+        e.preventDefault && e.preventDefault();
+      } catch (err) {}
+      try {
+        e.stopImmediatePropagation && e.stopImmediatePropagation();
+      } catch (err) {}
+      // silencioso para reduzir ruído de extensões
+      return;
+    }
+  }
+
+  window.addEventListener("error", onAny, true);
+  window.addEventListener("unhandledrejection", onAny, true);
+
+  // Intercept console to filter extension-origin messages
+  try {
+    const nativeError = console.error.bind(console);
+    console.error = function (...args) {
+      try {
+        const text = args
+          .map((a) => {
+            if (typeof a === "string") return a;
+            if (a && a.message) return a.message;
+            try {
+              return JSON.stringify(a);
+            } catch (e) {
+              return String(a);
+            }
+          })
+          .join(" ");
+        if (shouldIgnore(text)) return;
+      } catch (e) {}
+      nativeError(...args);
+    };
+
+    const nativeWarn = console.warn.bind(console);
+    console.warn = function (...args) {
+      try {
+        const text = args
+          .map((a) =>
+            typeof a === "string" ? a : (a && a.message) || String(a),
+          )
+          .join(" ");
+        if (shouldIgnore(text)) return;
+      } catch (e) {}
+      nativeWarn(...args);
+    };
+  } catch (e) {}
+})();
