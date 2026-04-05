@@ -168,7 +168,6 @@ my-icon {
   color: inherit;
   width: 1em;
   height: 1em;
-  pointer-events: none;
 
   -webkit-mask: var(--icon-url) no-repeat center / contain;
   -webkit-mask-repeat: no-repeat;
@@ -198,6 +197,12 @@ my-icon {
 /* --------------------------------------------------
    RESET
 -------------------------------------------------- */
+p,
+b,
+img,
+my-icon {
+  pointer-events: none;
+}
 
 img,
 picture,
@@ -252,6 +257,8 @@ button,
 a,
 [role="button"] {
   -webkit-tap-highlight-color: transparent;
+  transition: all 0.2s ease-in-out;
+  will-change: transform;
 }
 
 /* --------------------------------------------------

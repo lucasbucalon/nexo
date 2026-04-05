@@ -10,7 +10,8 @@ hr {
 
 /* Botão com Efeito Ripple */
 
-.home_page button {
+.btn {
+  display: relative;
   padding: 16px 0;
   width: 100%;
   font-size: 1.8rem;
@@ -19,10 +20,12 @@ hr {
   border: 1px solid var(--bg-menu);
   border-radius: var(--box-radius);
   margin-top: 30px;
+
+  box-shadow: var(--box-shadow);
 }
 
 @media (hover: hover) and (pointer: fine) {
-  .home_page button:hover {
+  .btn:hover {
     background-color: var(--bg-menu);
     border: 1px solid var(--hover);
     transform: scale(1.03);

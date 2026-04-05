@@ -17,11 +17,11 @@
   --bg-dark: #1f2937;
   --thumb-light: #ffffff;
   --thumb-dark: #111827;
+
+  --box-shadow: 0 0 10px rgba(255, 255, 255, 0.05);
 }
 
 [data-theme="dark"] {
   --bg-gradient-start: rgb(21, 12, 63);
   --bg-gradient-end: #1e1e1e;
 }
-
-

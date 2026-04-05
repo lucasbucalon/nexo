@@ -17,6 +17,7 @@ html[data-theme="dark"] {
   background: none;
   padding: 0;
   margin: 0 auto;
+  
 }
 
 .toggle_track {
@@ -28,6 +29,7 @@ html[data-theme="dark"] {
   align-items: center;
   padding: 3px;
   transition: background var(--transition);
+  box-shadow: var(--box-shadow);
 }
 
 .toggle_thumb {
