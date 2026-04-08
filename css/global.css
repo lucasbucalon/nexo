@@ -32,7 +32,7 @@ html {
   touch-action: manipulation;
   -webkit-tap-highlight-color: transparent;
 
-  background: var(--bg-gradient-start);
+  /* background: var(--bg-gradient-start); */
 }
 
 body {
@@ -54,7 +54,7 @@ body {
 }
 
 body::before {
-  content: "";
+  content: '';
   position: absolute;
   inset: 0;
   z-index: -100;
@@ -131,27 +131,27 @@ img[src] {
   cursor: pointer;
 }
 
-a[target="_blank"]::after,
-[data-link][target="_blank"]::after {
-  content: "↗";
+a[target='_blank']::after,
+[data-link][target='_blank']::after {
+  content: '↗';
   font-size: 0.75em;
   margin-left: 4px;
 }
 
 a[download]::after,
 [data-link][download]::after {
-  content: "⬇";
+  content: '⬇';
   font-size: 0.75em;
   margin-left: 4px;
 }
 
-a[href^="javascript:"],
-[data-link][href^="javascript:"] {
+a[href^='javascript:'],
+[data-link][href^='javascript:'] {
   pointer-events: none;
 }
 
-a[aria-disabled="true"],
-[data-link][aria-disabled="true"] {
+a[aria-disabled='true'],
+[data-link][aria-disabled='true'] {
   pointer-events: none;
 }
 
@@ -223,8 +223,8 @@ select {
 }
 
 button,
-input[type="button"],
-input[type="submit"] {
+input[type='button'],
+input[type='submit'] {
   cursor: pointer;
   background: none;
 }
@@ -254,7 +254,7 @@ table {
 
 button,
 a,
-[role="button"] {
+[role='button'] {
   -webkit-tap-highlight-color: transparent;
   transition: all 0.2s ease-in-out;
   will-change: transform;
@@ -280,7 +280,10 @@ a,
 
 @media (hover: none) {
   .tooltip-global {
-    transform: translate(-50%, calc(var(--tooltip-offset) + 6px));
+    transform: translate(
+      -50%,
+      calc(var(--tooltip-offset) + 6px)
+    );
     pointer-events: auto;
   }
 }

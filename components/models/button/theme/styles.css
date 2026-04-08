@@ -36,7 +36,7 @@
   pointer-events: none;
 }
 
-html[data-theme="dark"] .toggle_thumb {
+html[data-theme='dark'] .toggle_thumb {
   transform: translateX(32px);
 }
 
@@ -50,24 +50,24 @@ html[data-theme="dark"] .toggle_thumb {
     transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-html[data-theme="light"] [data-icon="moon"] {
+html[data-theme='light'] [data-icon='moon'] {
   opacity: 0;
   transform: scale(0.6) rotate(45deg);
 }
 
-html[data-theme="dark"] [data-icon="sun"] {
+html[data-theme='dark'] [data-icon='sun'] {
   opacity: 0;
   transform: scale(0.6) rotate(-45deg);
 }
 
-[data-tooltip="Trocar Tema"] {
+[data-tooltip='Trocar Tema'] {
   --tooltip-offset: -35px;
 }
 
-[data-icon="sun"] {
+[data-icon='sun'] {
   color: var(--color-theme);
 }
 
-[data-icon="moon"] {
+[data-icon='moon'] {
   color: var(--color-theme);
 }

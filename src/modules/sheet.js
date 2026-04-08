@@ -4,42 +4,47 @@
 let cfgInterno = {
   scroll: {
     enabled: false,
-    mode: "original",
+    mode: 'original',
     custom: { ease: 0.2, stepMin: 0.8, stepMax: 80 },
   },
   fade: {
     enabled: true,
     duration: 250,
     useTranslate: true,
-    translateValue: "1px",
+    translateValue: '1px',
   },
-};
+}
 
 // ------------------------------
 // Fade Helpers
 // ------------------------------
-export function fadeOut(el, duration = 200, translate = "6px") {
+export function fadeOut(
+  el,
+  duration = 200,
+  translate = '6px'
+) {
   return new Promise((resolve) => {
-    if (!el) return resolve();
-    el.style.transition = `opacity ${duration}ms ease, transform ${duration}ms ease`;
-    el.style.willChange = "opacity, transform";
-    void el.offsetWidth;
-    el.style.opacity = "0";
-    if (translate) el.style.transform = `translateY(${translate})`;
-    setTimeout(resolve, duration + 10);
-  });
+    if (!el) return resolve()
+    el.style.transition = `opacity ${duration}ms ease, transform ${duration}ms ease`
+    el.style.willChange = 'opacity, transform'
+    void el.offsetWidth
+    el.style.opacity = '0'
+    if (translate)
+      el.style.transform = `translateY(${translate})`
+    setTimeout(resolve, duration + 10)
+  })
 }
 
 export function fadeIn(el, duration = 200) {
   return new Promise((resolve) => {
-    if (!el) return resolve();
-    el.style.transition = `opacity ${duration}ms ease, transform ${duration}ms ease`;
-    el.style.willChange = "opacity, transform";
-    void el.offsetWidth;
-    el.style.opacity = "1";
-    el.style.transform = "translateY(0)";
-    setTimeout(resolve, duration + 10);
-  });
+    if (!el) return resolve()
+    el.style.transition = `opacity ${duration}ms ease, transform ${duration}ms ease`
+    el.style.willChange = 'opacity, transform'
+    void el.offsetWidth
+    el.style.opacity = '1'
+    el.style.transform = 'translateY(0)'
+    setTimeout(resolve, duration + 10)
+  })
 }
 
 // ------------------------------
@@ -47,79 +52,86 @@ export function fadeIn(el, duration = 200) {
 // ------------------------------
 function onceTransitionEnd(el, timeoutMs = 250) {
   return new Promise((resolve) => {
-    if (!el) return resolve();
+    if (!el) return resolve()
 
-    let resolved = false;
+    let resolved = false
 
     const timer = setTimeout(() => {
-      if (resolved) return;
-      resolved = true;
-      cleanup();
-      resolve();
-    }, timeoutMs + 50);
+      if (resolved) return
+      resolved = true
+      cleanup()
+      resolve()
+    }, timeoutMs + 50)
 
     function handler(e) {
-      if (e.target !== el || resolved) return;
-      resolved = true;
-      cleanup();
-      resolve();
+      if (e.target !== el || resolved) return
+      resolved = true
+      cleanup()
+      resolve()
     }
 
     function cleanup() {
-      clearTimeout(timer);
-      el.removeEventListener("transitionend", handler);
+      clearTimeout(timer)
+      el.removeEventListener('transitionend', handler)
     }
 
-    el.addEventListener("transitionend", handler);
-  });
+    el.addEventListener('transitionend', handler)
+  })
 }
 
 // ------------------------------
 // applyFade para renderizações SPA
 // ------------------------------
-const fadeMap = new WeakMap();
+const fadeMap = new WeakMap()
 
-export async function applyFade(el, render, durationOverride) {
-  const fadeCfg = cfgInterno.fade || { enabled: false };
-  if (!fadeCfg.enabled || !el) return render();
+export async function applyFade(
+  el,
+  render,
+  durationOverride
+) {
+  const fadeCfg = cfgInterno.fade || { enabled: false }
+  if (!fadeCfg.enabled || !el) return render()
 
-  const duration = durationOverride ?? fadeCfg.duration;
-  const translate = fadeCfg.useTranslate ? fadeCfg.translateValue : null;
+  const duration = durationOverride ?? fadeCfg.duration
+  const translate = fadeCfg.useTranslate
+    ? fadeCfg.translateValue
+    : null
 
-  const ongoing = fadeMap.get(el);
-  if (ongoing) await ongoing.catch(() => {});
+  const ongoing = fadeMap.get(el)
+  if (ongoing) await ongoing.catch(() => {})
 
   const op = (async () => {
-    const prevTransition = el.style.transition;
-    el.style.transition = `opacity ${duration}ms ease, transform ${duration}ms ease`;
-    el.style.willChange = "opacity, transform";
+    const prevTransition = el.style.transition
+    el.style.transition = `opacity ${duration}ms ease, transform ${duration}ms ease`
+    el.style.willChange = 'opacity, transform'
 
     if (!el.style.opacity)
-      el.style.opacity = getComputedStyle(el).opacity || "1";
+      el.style.opacity = getComputedStyle(el).opacity || '1'
 
-    void el.offsetWidth;
+    void el.offsetWidth
 
-    el.style.opacity = "0";
-    if (translate) el.style.transform = `translateY(${translate})`;
+    el.style.opacity = '0'
+    if (translate)
+      el.style.transform = `translateY(${translate})`
 
-    await onceTransitionEnd(el, duration);
-    await render();
-    void el.offsetWidth;
+    await onceTransitionEnd(el, duration)
+    await render()
+    void el.offsetWidth
 
-    el.style.opacity = "1";
-    if (translate) el.style.transform = "translateY(0)";
+    el.style.opacity = '1'
+    if (translate) el.style.transform = 'translateY(0)'
 
-    await onceTransitionEnd(el, duration);
+    await onceTransitionEnd(el, duration)
 
-    el.style.transition = prevTransition || "";
-  })();
+    el.style.transition = prevTransition || ''
+  })()
 
-  fadeMap.set(el, op);
+  fadeMap.set(el, op)
 
   try {
-    await op;
+    await op
   } finally {
-    fadeMap.delete(el);
+    fadeMap.delete(el)
   }
 }
 
@@ -132,46 +144,51 @@ let smoothState = {
   target: 0,
   current: 0,
   running: false,
-};
+}
 
 function clamp(value, min, max) {
-  return Math.max(min, Math.min(max, value));
+  return Math.max(min, Math.min(max, value))
 }
 
 function initSmoothScroll(scrollCfg) {
-  if (smoothState.initialized || !scrollCfg?.enabled) return;
+  if (smoothState.initialized || !scrollCfg?.enabled) return
 
   const presets = {
     original: { ease: 1, stepMin: 0.5, stepMax: Infinity },
     smooth: { ease: 0.2, stepMin: 0.8, stepMax: 80 },
     heavy: { ease: 0.07, stepMin: 0.6, stepMax: 40 },
-  };
+  }
 
   const cfgScroll =
-    scrollCfg.mode === "custom"
+    scrollCfg.mode === 'custom'
       ? scrollCfg.custom || scrollCfg
-      : presets[scrollCfg.mode] || presets.smooth;
+      : presets[scrollCfg.mode] || presets.smooth
 
-  smoothState.current = window.scrollY;
-  smoothState.target = window.scrollY;
+  smoothState.current = window.scrollY
+  smoothState.target = window.scrollY
 
   function animate() {
-    const diff = smoothState.target - smoothState.current;
+    const diff = smoothState.target - smoothState.current
 
     if (Math.abs(diff) > 0.5) {
-      let step = diff * cfgScroll.ease;
-      step = clamp(step, -cfgScroll.stepMax, cfgScroll.stepMax);
+      let step = diff * cfgScroll.ease
+      step = clamp(
+        step,
+        -cfgScroll.stepMax,
+        cfgScroll.stepMax
+      )
 
       if (Math.abs(step) < cfgScroll.stepMin)
-        step = step > 0 ? cfgScroll.stepMin : -cfgScroll.stepMin;
+        step =
+          step > 0 ? cfgScroll.stepMin : -cfgScroll.stepMin
 
-      smoothState.current += step;
-      window.scrollTo(0, smoothState.current);
-      requestAnimationFrame(animate);
+      smoothState.current += step
+      window.scrollTo(0, smoothState.current)
+      requestAnimationFrame(animate)
     } else {
-      smoothState.current = smoothState.target;
-      window.scrollTo(0, smoothState.current);
-      smoothState.running = false;
+      smoothState.current = smoothState.target
+      window.scrollTo(0, smoothState.current)
+      smoothState.running = false
     }
   }
 
@@ -179,63 +196,66 @@ function initSmoothScroll(scrollCfg) {
     smoothState.target = clamp(
       newTarget,
       0,
-      document.documentElement.scrollHeight - window.innerHeight,
-    );
+      document.documentElement.scrollHeight -
+        window.innerHeight
+    )
 
     if (!smoothState.running) {
-      smoothState.running = true;
-      requestAnimationFrame(animate);
+      smoothState.running = true
+      requestAnimationFrame(animate)
     }
   }
 
   function onWheel(e) {
-    const tag = e.target?.tagName;
+    const tag = e.target?.tagName
 
     if (
       e.ctrlKey ||
-      ["INPUT", "TEXTAREA", "SELECT"].includes(tag) ||
+      ['INPUT', 'TEXTAREA', 'SELECT'].includes(tag) ||
       e.target.isContentEditable
     )
-      return;
+      return
 
-    e.preventDefault();
-    goTo(smoothState.target + e.deltaY);
+    e.preventDefault()
+    goTo(smoothState.target + e.deltaY)
   }
 
-  window.addEventListener("wheel", onWheel, { passive: false });
+  window.addEventListener('wheel', onWheel, {
+    passive: false,
+  })
 
-  window.addEventListener("scroll", () => {
+  window.addEventListener('scroll', () => {
     if (!smoothState.running) {
-      smoothState.current = window.scrollY;
-      smoothState.target = window.scrollY;
+      smoothState.current = window.scrollY
+      smoothState.target = window.scrollY
     }
-  });
+  })
 
   window.__sheetScrollTo = (y) => {
-    smoothState.current = window.scrollY;
-    goTo(y);
-  };
+    smoothState.current = window.scrollY
+    goTo(y)
+  }
 
-  smoothState.initialized = true;
+  smoothState.initialized = true
 
   smoothState.cleanup = () => {
-    window.removeEventListener("wheel", onWheel);
-    smoothState.initialized = false;
-    smoothState.running = false;
-  };
+    window.removeEventListener('wheel', onWheel)
+    smoothState.initialized = false
+    smoothState.running = false
+  }
 }
 
 // ------------------------------
 // Configure sheet
 // ------------------------------
 export function configureSheet(configFromMain) {
-  cfgInterno = { ...cfgInterno, ...configFromMain };
-  initSmoothScroll(cfgInterno.scroll);
+  cfgInterno = { ...cfgInterno, ...configFromMain }
+  initSmoothScroll(cfgInterno.scroll)
 }
 
 // ------------------------------
 // Cleanup smooth scroll
 // ------------------------------
 export function cleanupSmooth() {
-  if (smoothState.cleanup) smoothState.cleanup();
+  if (smoothState.cleanup) smoothState.cleanup()
 }

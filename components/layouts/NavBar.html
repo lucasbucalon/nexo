@@ -81,26 +81,29 @@
 
 <script>
   function updateActiveMenu() {
-    const links = document.querySelectorAll(".box_menu a");
-    const currentHash = window.location.hash;
+    const links = document.querySelectorAll('.box_menu a')
+    const currentHash = window.location.hash
 
     links.forEach((link) => {
-      if (link.getAttribute("href") === currentHash) {
-        link.classList.add("active");
+      if (link.getAttribute('href') === currentHash) {
+        link.classList.add('active')
       } else {
-        link.classList.remove("active");
+        link.classList.remove('active')
       }
-    });
+    })
   }
 
-  window.addEventListener("hashchange", updateActiveMenu);
+  window.addEventListener('hashchange', updateActiveMenu)
 
-  document.addEventListener("spa:pageLoaded", updateActiveMenu);
+  document.addEventListener(
+    'spa:pageLoaded',
+    updateActiveMenu
+  )
 
-  window.addEventListener("load", () => {
+  window.addEventListener('load', () => {
     if (!window.location.hash) {
-      window.location.hash = "#/home";
+      window.location.hash = '#/home'
     }
-    updateActiveMenu();
-  });
+    updateActiveMenu()
+  })
 </script>

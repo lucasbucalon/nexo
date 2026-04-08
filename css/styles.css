@@ -20,7 +20,7 @@
   --box-radius: 20px;
 }
 
-[data-theme="dark"] {
+[data-theme='dark'] {
   --bg-gradient-start: rgb(21, 12, 63);
   --bg-gradient-end: #1e1e1e;
   --bg-menu: rgba(255, 255, 255, 0.1);
