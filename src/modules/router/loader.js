@@ -1,4 +1,4 @@
-import { applyFade } from '../sheet.js'
+import { applyFade } from '../core/sheet.js'
 import { reexecuteScripts } from './scripts.js'
 import { updateHeadFromHTML } from './head.js'
 

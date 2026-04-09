@@ -1,177 +1,213 @@
+// --------------------------------------------------
+// ENV DETECTION
+// --------------------------------------------------
+
+const isBrowser = typeof window !== 'undefined'
+const isDOM = isBrowser && typeof document !== 'undefined'
+
+// --------------------------------------------------
+// IMPORTS (SSR SAFE)
+// --------------------------------------------------
+
 import { config } from '../../main.js'
 
-// ------------------------------
-// ERROS IGNORADOS
-// ------------------------------
+// --------------------------------------------------
+// IGNORED ERRORS
+// --------------------------------------------------
 
 const IGNORED_ERRORS = [
   'A listener indicated an asynchronous response',
   'chrome-extension',
 ]
 
+function shouldIgnore(msg) {
+  if (!msg) return false
+  const text = String(msg)
+  return IGNORED_ERRORS.some((p) => text.includes(p))
+}
+
+// --------------------------------------------------
+// ERROR HANDLER (NO SIDE EFFECT AT IMPORT TIME)
+// --------------------------------------------------
+
 function ignoreError(event) {
-  const msg = event.message || event.reason || ''
-  if (IGNORED_ERRORS.some((p) => msg.includes(p))) {
-    console.warn('Ignorado:', msg)
-    event.preventDefault?.()
+  const msg =
+    event.message ||
+    event.reason?.message ||
+    event.reason ||
+    ''
+
+  if (shouldIgnore(msg)) {
+    try {
+      event.preventDefault?.()
+      event.stopImmediatePropagation?.()
+    } catch {}
   }
 }
 
-window.addEventListener('error', ignoreError)
-window.addEventListener('unhandledrejection', ignoreError)
+// --------------------------------------------------
+// REGISTER GLOBAL HANDLERS (ONLY CLIENT)
+// --------------------------------------------------
 
-// ------------------------------
-// TRACK DE ASSETS CARREGADOS
-// ------------------------------
-const loadedAssets = { css: new Set(), js: new Set() }
+function setupErrorHandlers() {
+  if (!isBrowser) return
 
-// ------------------------------
-// CARREGAMENTO DINÂMICO DE CSS/JS
-// ------------------------------
+  window.addEventListener('error', ignoreError, true)
+  window.addEventListener(
+    'unhandledrejection',
+    ignoreError,
+    true
+  )
+}
+
+// --------------------------------------------------
+// ASSET TRACKING
+// --------------------------------------------------
+
+const loadedAssets = {
+  css: new Set(),
+  js: new Set(),
+}
+
+// --------------------------------------------------
+// LOAD CSS
+// --------------------------------------------------
+
 export async function loadCSS(
   href,
   { preload = false } = {}
 ) {
-  const hrefResolved = new URL(href, document.baseURI).href
-  if (loadedAssets.css.has(hrefResolved)) return
+  if (!isDOM) return
+
+  const url = new URL(href, document.baseURI).href
+  if (loadedAssets.css.has(url)) return
 
   try {
-    const headResp = await fetch(hrefResolved, {
-      method: 'HEAD',
-    })
-    if (!headResp.ok) {
-      console.warn(
-        `[Optimize] CSS não encontrado: ${hrefResolved}`
-      )
-      loadedAssets.css.add(hrefResolved)
-      return
-    }
-  } catch (err) {}
+    const res = await fetch(url, { method: 'HEAD' })
+    if (!res.ok) return
+  } catch {}
 
   return new Promise((resolve) => {
-    let link
+    const link = document.createElement('link')
+
     if (preload) {
-      link = document.createElement('link')
       link.rel = 'preload'
       link.as = 'style'
-      link.href = hrefResolved
       link.onload = () => {
-        try {
-          link.rel = 'stylesheet'
-        } catch (e) {}
+        link.rel = 'stylesheet'
         resolve()
       }
-      link.onerror = () => {
-        try {
-          link.rel = 'stylesheet'
-        } catch (e) {}
-        resolve()
-      }
-      document.head.appendChild(link)
     } else {
-      link = document.createElement('link')
       link.rel = 'stylesheet'
-      link.href = hrefResolved
       link.onload = resolve
-      link.onerror = resolve
-      document.head.appendChild(link)
     }
 
-    loadedAssets.css.add(hrefResolved)
+    link.href = url
+    document.head.appendChild(link)
+
+    loadedAssets.css.add(url)
   })
 }
 
+// --------------------------------------------------
+// LOAD JS
+// --------------------------------------------------
+
 export async function loadJS(src, module = true) {
-  const srcResolved = new URL(src, document.baseURI).href
-  if (loadedAssets.js.has(srcResolved)) return
+  if (!isDOM) return
+
+  const url = new URL(src, document.baseURI).href
+  if (loadedAssets.js.has(url)) return
 
   try {
-    const headResp = await fetch(srcResolved, {
-      method: 'HEAD',
-    })
-    if (!headResp.ok) {
-      console.warn(
-        `[Optimize] Script não encontrado: ${srcResolved}`
-      )
-      loadedAssets.js.add(srcResolved)
-      return
-    }
-  } catch (err) {}
+    const res = await fetch(url, { method: 'HEAD' })
+    if (!res.ok) return
+  } catch {}
 
   return new Promise((resolve, reject) => {
     const script = document.createElement('script')
-    script.src = srcResolved
+
+    script.src = url
     script.defer = true
     if (module) script.type = 'module'
-    script.onload = () => resolve()
-    script.onerror = () => {
-      console.warn(
-        `[Optimize] Falha ao carregar ${srcResolved}`
-      )
-      reject(new Error(`Falha ao carregar ${srcResolved}`))
-    }
+
+    script.onload = resolve
+    script.onerror = () =>
+      reject(new Error(`Falha ao carregar ${url}`))
+
     document.body.appendChild(script)
-    loadedAssets.js.add(srcResolved)
+    loadedAssets.js.add(url)
   })
 }
 
-// ------------------------------
-// OBSERVER PARA LAZY LOAD POR VISIBILIDADE
-// ------------------------------
-const lazyObserver = new IntersectionObserver(
-  (entries) => {
-    entries.forEach(async (entry) => {
-      if (!entry.isIntersecting) return
-      const el = entry.target
+// --------------------------------------------------
+// INTERSECTION OBSERVER (LAZY LOAD)
+// --------------------------------------------------
 
-      for (const cls of Array.from(el.classList).filter(
-        (c) => c.includes('-')
-      )) {
-        const [category, name] = cls.split('-')
-        const css = `${config.dirs.models}/${category}/${name}/styles.css`
-        const js = `${config.dirs.models}/${category}/${name}/script.js`
+let lazyObserver = null
 
-        try {
-          await loadCSS(css)
-          await loadJS(js)
-          const key = `${category}-${name}`
-          window.Components?.[key]?.init?.()
-        } catch (e) {
-          console.warn(e)
+function setupLazyObserver() {
+  if (!isDOM || typeof IntersectionObserver === 'undefined')
+    return
+
+  lazyObserver = new IntersectionObserver(
+    async (entries) => {
+      for (const entry of entries) {
+        if (!entry.isIntersecting) continue
+
+        const el = entry.target
+
+        for (const cls of [...el.classList].filter((c) =>
+          c.includes('-')
+        )) {
+          const [category, name] = cls.split('-')
+
+          const css = `${config.dirs.models}/${category}/${name}/styles.css`
+          const js = `${config.dirs.models}/${category}/${name}/script.js`
+
+          try {
+            await loadCSS(css)
+            await loadJS(js)
+
+            const key = `${category}-${name}`
+            window.Components?.[key]?.init?.()
+          } catch {}
         }
+
+        if (el.dataset.lazy) {
+          import(el.dataset.lazy)
+            .then((m) => m.init?.(el))
+            .catch(() => {})
+        }
+
+        lazyObserver.unobserve(el)
       }
+    },
+    { threshold: 0.1 }
+  )
+}
 
-      if (el.dataset.lazy) {
-        import(el.dataset.lazy)
-          .then((m) => m.init?.(el))
-          .catch(() => {})
-      }
+// --------------------------------------------------
+// INIT LAZY SYSTEM
+// --------------------------------------------------
 
-      el.querySelectorAll(
-        "script[type='module'][src$='script.js']"
-      ).forEach((s) => {
-        loadJS(s.src).catch(() => {})
-      })
-
-      lazyObserver.unobserve(el)
-    })
-  },
-  { threshold: 0.1 }
-)
-
-// ------------------------------
-// INICIALIZAÇÃO DE LAZY LOAD
-// ------------------------------
 export function initLazyLoad() {
+  if (!isDOM) return
+
+  if (!lazyObserver) setupLazyObserver()
+
   document
     .querySelectorAll("[class*='-'], [data-lazy]")
     .forEach((el) => lazyObserver.observe(el))
 }
 
-// ------------------------------
-// LAZY LOAD POR ROTA
-// ------------------------------
+// --------------------------------------------------
+// ROUTE LAZY LOAD
+// --------------------------------------------------
+
 export async function lazyLoadRoute() {
+  if (!isDOM) return
+
   document.querySelectorAll('[data-lazy]').forEach((el) => {
     import(el.dataset.lazy)
       .then((m) => m.init?.(el))
@@ -185,86 +221,54 @@ export async function lazyLoadRoute() {
     .forEach((s) => loadJS(s.src).catch(() => {}))
 }
 
-// ------------------------------
-// EXECUÇÃO AUTOMÁTICA
-// ------------------------------
-document.addEventListener('DOMContentLoaded', () => {
-  initLazyLoad()
-})
+// --------------------------------------------------
+// BOOTSTRAP EVENTS (CLIENT ONLY)
+// --------------------------------------------------
 
-document.addEventListener('spa:pageLoaded', () => {
-  initLazyLoad()
-})
-;(function () {
-  const IGNORED = [
-    'A listener indicated an asynchronous response',
-    'chrome-extension',
-  ]
+function setupAutoInit() {
+  if (!isBrowser) return
 
-  function shouldIgnore(msg) {
-    if (!msg) return false
-    try {
-      msg = String(msg)
-    } catch (e) {}
-    return IGNORED.some((p) => msg.includes(p))
+  document.addEventListener(
+    'DOMContentLoaded',
+    initLazyLoad
+  )
+  document.addEventListener('spa:pageLoaded', initLazyLoad)
+}
+
+// --------------------------------------------------
+// INIT ENTRYPOINT
+// --------------------------------------------------
+
+export function initOptimizer() {
+  if (!isBrowser) return
+
+  setupErrorHandlers()
+  setupLazyObserver()
+  setupAutoInit()
+}
+
+// --------------------------------------------------
+// OPTIONAL GLOBAL SHIELD (console filter)
+// --------------------------------------------------
+
+function setupConsoleFilter() {
+  if (!isBrowser) return
+
+  const nativeError = console.error
+  console.error = (...args) => {
+    const msg = args.join(' ')
+    if (shouldIgnore(msg)) return
+    nativeError(...args)
   }
 
-  function onAny(e) {
-    const msg =
-      e.message ||
-      (e.reason && e.reason.message) ||
-      e.reason ||
-      ''
-    if (shouldIgnore(msg)) {
-      try {
-        e.preventDefault && e.preventDefault()
-      } catch (err) {}
-      try {
-        e.stopImmediatePropagation &&
-          e.stopImmediatePropagation()
-      } catch (err) {}
-      // silencioso para reduzir ruído de extensões
-      return
-    }
+  const nativeWarn = console.warn
+  console.warn = (...args) => {
+    const msg = args.join(' ')
+    if (shouldIgnore(msg)) return
+    nativeWarn(...args)
   }
+}
 
-  window.addEventListener('error', onAny, true)
-  window.addEventListener('unhandledrejection', onAny, true)
-
-  // Intercept console to filter extension-origin messages
-  try {
-    const nativeError = console.error.bind(console)
-    console.error = function (...args) {
-      try {
-        const text = args
-          .map((a) => {
-            if (typeof a === 'string') return a
-            if (a && a.message) return a.message
-            try {
-              return JSON.stringify(a)
-            } catch (e) {
-              return String(a)
-            }
-          })
-          .join(' ')
-        if (shouldIgnore(text)) return
-      } catch (e) {}
-      nativeError(...args)
-    }
-
-    const nativeWarn = console.warn.bind(console)
-    console.warn = function (...args) {
-      try {
-        const text = args
-          .map((a) =>
-            typeof a === 'string'
-              ? a
-              : (a && a.message) || String(a)
-          )
-          .join(' ')
-        if (shouldIgnore(text)) return
-      } catch (e) {}
-      nativeWarn(...args)
-    }
-  } catch (e) {}
-})()
+if (isBrowser) {
+  setupConsoleFilter()
+}

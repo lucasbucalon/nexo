@@ -1,3 +1,9 @@
+const isBrowser = typeof window !== 'undefined'
+
+// ------------------
+// HELPERS
+// ------------------
+
 function getSystemTheme() {
   return window.matchMedia('(prefers-color-scheme: dark)')
     .matches
@@ -10,28 +16,39 @@ function getSavedTheme() {
 }
 
 function applyTheme(theme) {
+  const html = document.documentElement
   html.dataset.theme = theme
   localStorage.setItem('theme', theme)
 }
+
+// ------------------
+// INIT
+// ------------------
 
 function initTheme() {
   const saved = getSavedTheme()
   applyTheme(saved || getSystemTheme())
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-  const toggle = document.querySelector('.toggle')
-  const html = document.documentElement
+// ------------------
+// DOM READY
+// ------------------
 
-  if (toggle) {
-    toggle.addEventListener('click', () => {
-      const current = html.dataset.theme
-      const next = current === 'dark' ? 'light' : 'dark'
-      applyTheme(next)
-    })
-  } else {
-    console.warn('Toggle não encontrado no DOM')
-  }
+if (isBrowser) {
+  document.addEventListener('DOMContentLoaded', () => {
+    const toggle = document.getElementById('theme-toggle')
 
-  initTheme()
-})
+    if (toggle) {
+      toggle.addEventListener('click', () => {
+        const html = document.documentElement
+        const current = html.dataset.theme
+        const next = current === 'dark' ? 'light' : 'dark'
+        applyTheme(next)
+      })
+    } else {
+      console.warn('Botão de tema não encontrado')
+    }
+
+    initTheme()
+  })
+}

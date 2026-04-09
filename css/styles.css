@@ -20,7 +20,7 @@
   --box-radius: 20px;
 }
 
-[data-theme='dark'] {
+html[data-theme='dark'] {
   --bg-gradient-start: rgb(21, 12, 63);
   --bg-gradient-end: #1e1e1e;
   --bg-menu: rgba(255, 255, 255, 0.1);
@@ -38,8 +38,10 @@
   --track-bg: #1f2937;
   --thumb-bg: #111827;
   --color-theme: #ffffff;
+}
 
-  @media (max-width: 800px) {
+@media (max-width: 800px) {
+  html[data-theme='dark'] {
     --bg-btn: rgba(255, 255, 255, 0.1);
   }
 }
