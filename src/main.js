@@ -3,12 +3,11 @@ import {
   applyAssets,
   setAssetMaps,
 } from './modules/utils.js'
+
 import { imageMap, linkMap, iconMap } from './assets.js'
-import { lazyLoadRoute } from './modules/optimize.js'
 import { configureSheet } from './modules/sheet.js'
-import './modules/route.js'
-import './modules/layouts.js'
-import './modules/models.js'
+import { createApp } from './modules/lib/index.js'
+
 import './modules/theme.js'
 
 // ---------- Configurações ----------
@@ -45,28 +44,32 @@ export const animated = {
 
 // ---------- Inicialização ----------
 document.addEventListener('DOMContentLoaded', () => {
-  setAssetMaps({
-    imageMap,
-    linkMap,
-    iconMap,
-  })
-  configureSheet(animated)
+  // assets
+  setAssetMaps({ imageMap, linkMap, iconMap })
   initAssets()
 
+  // animação
+  configureSheet(animated)
+
+  // framework
+  const app = createApp({
+    routes,
+    config,
+    root: document.getElementById('route'),
+  })
+
+  app.mount()
+
+  // pós-render
   document.addEventListener('spa:pageLoaded', (e) => {
-    const container =
-      e.detail?.container || e.target || document
+    const container = e.detail?.container || document
+
     try {
       applyAssets(container)
     } catch (err) {
       console.warn('applyAssets falhou:', err)
     }
-    lazyLoadRoute()
   })
 
-  // sinaliza que o framework já está pronto (assets e handlers registrados)
-  window.__frameworkReady = true
-  document.dispatchEvent(new Event('framework:ready'))
-
-  console.log('Main.js initialized ✅')
+  console.log('App initialized ✅')
 })

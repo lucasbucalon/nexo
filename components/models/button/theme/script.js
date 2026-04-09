@@ -1,8 +1,3 @@
-function algumaCoisa() {
-  const html = document.documentElement
-}
-const toggle = document.getElementById('button-theme')
-
 function getSystemTheme() {
   return window.matchMedia('(prefers-color-scheme: dark)')
     .matches

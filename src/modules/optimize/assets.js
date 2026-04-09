@@ -1,8 +1,9 @@
-import { config } from '../main.js'
+import { config } from '../../main.js'
 
 // ------------------------------
 // ERROS IGNORADOS
 // ------------------------------
+
 const IGNORED_ERRORS = [
   'A listener indicated an asynchronous response',
   'chrome-extension',
@@ -194,7 +195,6 @@ document.addEventListener('DOMContentLoaded', () => {
 document.addEventListener('spa:pageLoaded', () => {
   initLazyLoad()
 })
-
 ;(function () {
   const IGNORED = [
     'A listener indicated an asynchronous response',
