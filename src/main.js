@@ -5,6 +5,7 @@ import {
 } from './modules/core/utils.js'
 
 import { imageMap, linkMap, iconMap } from './assets.js'
+import { routes } from './path.js'
 import { configureSheet } from './modules/core/sheet.js'
 import { createApp } from './modules/lib/index.js'
 export function matchRoute(url, routes) {
@@ -23,14 +24,6 @@ export const config = {
   },
   pageInit: '/home',
 }
-
-export const routes = [
-  { path: /^\/home$/, page: '/pages/home' },
-  { path: /^\/about$/, page: '/pages/about' },
-  { path: /^\/work$/, page: '/pages/work' },
-  { path: /^\/hooby$/, page: '/pages/hooby' },
-  { path: /^\/gallery$/, page: '/pages/gallery' },
-]
 
 // ------------------------------
 // ANIMAÇÕES (CLIENT ONLY)

@@ -32,7 +32,7 @@ app.use(express.static(__dirname)) // opcional (client.js, etc)
 
 app.use(async (req, res) => {
   try {
-    const html = await renderPage(req.path)
+    const html = await renderPage(req.path, req)
     res.status(200).send(html)
   } catch (err) {
     console.error('[SSR ERROR]', err)
