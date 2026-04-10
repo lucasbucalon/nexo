@@ -1,8 +1,7 @@
 <!-- NEXO - Página de Apresentação -->
 
-<h1># Nexo</h1>
+<h1># SPA</h1>
 <br/>
-<a href="https://spa-gilt.vercel.app/">Visitar a Pagina</a>
 <br/>
 <p>
   A <strong>SPA</strong> construída com HTML, CSS e JavaScript puro, focada na criação de uma biblioteca/framework personalizável para aplicações leves. O projeto inclui otimização via pré-renderização, uma build tool simplificada e um servidor próprio com Node.js e Express para implementar um pseudo-SSR.
