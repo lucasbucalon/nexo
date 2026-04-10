@@ -2,10 +2,10 @@
 
 <h1># Nexo</h1>
 <br/>
-<a href="https://nexo-gilt.vercel.app/">Visitar a Pagina</a>
+<a href="https://spa-gilt.vercel.app/">Visitar a Pagina</a>
 <br/>
 <p>
-  A <strong>Nexo</strong> é uma single page direta e intuitiva, criada para apresentar e conectar pessoas de forma clara e envolvente. Seu objetivo é oferecer uma excelente primeira impressão, unindo as funcionalidades de uma linkpage e de um linktree, mas com atributos visuais e conectivos que proporcionam uma experiência digital mais imersiva e próxima. Assim, o público ganha acesso fácil a informações e conhecimento, enquanto o portador conquista maior proximidade e confiabilidade na relação com sua audiência.
+  A <strong>SPA</strong> construída com HTML, CSS e JavaScript puro, focada na criação de uma biblioteca/framework personalizável para aplicações leves. O projeto inclui otimização via pré-renderização, uma build tool simplificada e um servidor próprio com Node.js e Express para implementar um pseudo-SSR.
 </p>
 <br/>
     <h2>⚠️ Avisos Importantes</h2>
@@ -22,12 +22,8 @@
         sem frameworks ou bibliotecas)
       </li>
       <li>
-        <strong>Firebase, Node.js, Google Analytics</strong> (para backend,
-        análise de dados e controle)
-      </li>
-      <li>
-        <strong>VS Code, GitHub, Netlify</strong> (para codificação, controle de
-        versão e hospedagem)
+        <strong>VS Code, GitHub</strong> (para codificação, controle de
+        versão)
       </li>
        <li>
         <strong>Estou ultilizando uma Biblioteca SPA com um Framework criados por mim mesmo</strong> (para criação e base do projeto)
